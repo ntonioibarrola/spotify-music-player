@@ -7,7 +7,16 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        spotify: {
+          100: '#1ed760',
+          200: '#1fbb5d',
+          300: '#18a456',
+        },
+        offwhite: '#edf0f4',
+      },
+    },
   },
   plugins: [
     require('tailwindcss-fluid-type')({
