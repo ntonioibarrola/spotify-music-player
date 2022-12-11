@@ -14,6 +14,7 @@ module.exports = {
           200: '#1fbb5d',
           300: '#18a456',
         },
+        charcoal: '#2a2829',
         offwhite: '#edf0f4',
       },
     },

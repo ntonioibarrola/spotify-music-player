@@ -1,5 +1,41 @@
 import Image from 'next/image';
 
+interface DummyData {
+  albumCover: string;
+  songTitle: string;
+  artistName: string;
+  albumTitle: string;
+  dateAdded: string;
+  songLength: string;
+}
+
+const dummyData: Array<DummyData> = [
+  {
+    albumCover: '/dummy-nurture.png',
+    songTitle: 'Something Comforting',
+    artistName: 'Porter Robinson',
+    albumTitle: 'Nurture',
+    dateAdded: 'Dec 10, 2022',
+    songLength: '4:41',
+  },
+  {
+    albumCover: '/dummy-persona.png',
+    songTitle: 'Mikrokosmos',
+    artistName: 'BTS',
+    albumTitle: 'MAP OF THE SOUL: PERSONA',
+    dateAdded: 'Dec 10, 2022',
+    songLength: '3:44',
+  },
+  {
+    albumCover: '/dummy-whocares.png',
+    songTitle: 'AMAZING',
+    artistName: 'Rex Orange County',
+    albumTitle: 'WHO CARES?',
+    dateAdded: 'Dec 10, 2022',
+    songLength: '3:29',
+  },
+];
+
 function Center() {
   return (
     <div className='flex flex-grow justify-center bg-spotify-100'>
@@ -26,40 +62,59 @@ function Center() {
             height='208'
             alt='Session Image'
           />
-          <div className='ml-8 flex flex-col justify-end font-bold'>
+          <div className='ml-8 flex flex-col justify-end font-bold text-charcoal'>
             <div className='text-base'>PLAYLIST</div>
             <div className='fluid-text-5xl'>Playlist Name</div>
           </div>
         </div>
         <div>{/* Player */}</div>
         <div className='w-full px-40 text-left'>
-          <table className='w-full'>
+          <table className='w-full text-charcoal'>
             <thead>
-              <tr className='flex h-16 items-center gap-5 rounded-md p-3'>
-                <th>#</th>
-                <th className='w-[40%]'>TITLE</th>
-                <th className='w-[25%]'>ALBUM</th>
-                <th className='w-[25%]'>DATE ADDED</th>
-                <th className='w-[10%]'>DURATION</th>
+              <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-sm tracking-widest text-zinc-500'>
+                <th className='font-normal'>#</th>
+                <th className='w-[40%] font-normal'>TITLE</th>
+                <th className='w-[25%] font-normal'>ALBUM</th>
+                <th className='w-[25%] font-normal'>DATE ADDED</th>
+                <th className='w-[10%] font-normal'>DURATION</th>
               </tr>
             </thead>
             <tbody>
-              {[...Array(6)].map((_, index) => (
+              {dummyData.map((data: DummyData, index: number) => (
                 <tr
-                  key={`Song ${index}`}
-                  className='flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 hover:bg-spotify-200'
+                  key={`${data.songTitle}`}
+                  className='flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 hover:bg-gray-200'
                 >
-                  <td>{index}</td>
-                  <td className='flex w-[40%] items-center'>
-                    <div>Image</div>
-                    <div className='ml-5'>
-                      <div>Song Title</div>
-                      <div>Artist Name</div>
+                  <td className='text-zinc-500'>{index + 1}</td>
+                  <td className='before:content-[" "] relative flex w-[40%] items-center before:invisible'>
+                    <Image
+                      className='rounded-lg'
+                      src={data.albumCover}
+                      width='50'
+                      height='50'
+                      alt={`${data.albumTitle} Album Cover`}
+                    />
+                    <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap'>
+                      <span className='text-[1.05rem] font-semibold'>{data.songTitle}</span>
+                      <br />
+                      <span className='text-[0.95rem] font-semibold text-zinc-500'>
+                        {data.artistName}
+                      </span>
                     </div>
                   </td>
-                  <td className='w-[25%]'>Album Title</td>
-                  <td className='w-[25%]'>Date Added</td>
-                  <td className='w-[10%]'>Song Length</td>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-gray-500 before:invisible'>
+                    <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] font-semibold'>
+                      {data.albumTitle}
+                    </span>
+                  </td>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
+                    <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] font-semibold'>
+                      {data.dateAdded}
+                    </span>
+                  </td>
+                  <td className='w-[10%] text-[0.95rem] font-semibold tracking-widest text-zinc-500'>
+                    {data.songLength}
+                  </td>
                 </tr>
               ))}
             </tbody>
