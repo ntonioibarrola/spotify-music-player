@@ -129,34 +129,34 @@ function Center() {
                   key={`${data.songTitle}`}
                   className='flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 hover:bg-gray-200'
                 >
-                  <td className='text-[0.95rem] font-semibold text-zinc-500'>{index + 1}</td>
+                  <td className='text-[0.95rem] text-zinc-500'>{index + 1}</td>
                   <td className='before:content-[" "] relative flex w-[40%] items-center before:invisible'>
                     <Image
-                      className='rounded-lg'
+                      className='h-[50px] w-[50px] rounded-lg'
                       src={data.albumCover}
                       width='50'
                       height='50'
                       alt={`${data.albumTitle} Album Cover`}
                     />
-                    <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap'>
-                      <span className='text-[1rem] font-semibold'>{data.songTitle}</span>
+                    <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
+                      <span className='text-[1rem]'>{data.songTitle}</span>
                       <br />
-                      <span className='cursor-pointer text-[0.95rem] font-semibold text-zinc-500 hover:underline'>
+                      <span className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
                         {data.artistName}
                       </span>
                     </div>
                   </td>
                   <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
-                    <span className='absolute left-0 right-0 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] font-semibold hover:underline'>
+                    <span className='absolute left-0 right-0 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] hover:underline'>
                       {data.albumTitle}
                     </span>
                   </td>
                   <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
-                    <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] font-semibold'>
+                    <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem]'>
                       {data.dateAdded}
                     </span>
                   </td>
-                  <td className='w-[10%] text-right text-[0.95rem] font-semibold tracking-widest text-zinc-500'>
+                  <td className='w-[10%] text-right text-[0.95rem] tracking-widest text-zinc-500'>
                     {data.songLength}
                   </td>
                 </tr>

@@ -8,6 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        'spin-slow-running': 'spin 7s linear infinite running',
+        'spin-slow-paused': 'spin 7s linear infinite paused',
+      },
       colors: {
         spotify: {
           100: '#1ed760',
