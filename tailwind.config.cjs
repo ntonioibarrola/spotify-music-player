@@ -17,6 +17,10 @@ module.exports = {
         charcoal: '#2a2829',
         offwhite: '#edf0f4',
       },
+      fontFamily: {
+        gingerbold: ['F37 Ginger', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [
