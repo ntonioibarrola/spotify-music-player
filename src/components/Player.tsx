@@ -28,6 +28,10 @@ function Player() {
     setPercentage(Number(event.target.value));
   };
 
+  const testChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPercentage(Number(event.target.value));
+  };
+
   return (
     <div
       className='absolute bottom-0 flex h-32 w-full items-center justify-between border-t-4 border-solid border-t-white
@@ -59,7 +63,7 @@ function Player() {
         </div>
         <div className='flex items-center gap-x-5'>
           <Image
-            className='h-[20px] w-[20px] cursor-pointer opacity-40 hover:opacity-80'
+            className='cursor-pointer opacity-40 hover:opacity-80'
             src={'/previous.svg'}
             width='20'
             height='20'
@@ -70,7 +74,7 @@ function Player() {
             <Image
               className={`${
                 isPlaying ? 'hidden' : ''
-              } h-[60px] w-[60px] cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
+              } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
               src={'/play.svg'}
               width='60'
               height='60'
@@ -80,7 +84,7 @@ function Player() {
             <Image
               className={`${
                 isPlaying ? '' : 'hidden'
-              } h-[60px] w-[60px] cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
+              } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
               src={'/pause.svg'}
               width='60'
               height='60'
@@ -89,7 +93,7 @@ function Player() {
             />
           </div>
           <Image
-            className='h-[20px] w-[20px] cursor-pointer opacity-40 hover:opacity-80'
+            className='cursor-pointer opacity-40 hover:opacity-80'
             src={'/next.svg'}
             width='20'
             height='20'
@@ -102,9 +106,7 @@ function Player() {
         <div className='flex items-center gap-x-5'>
           <div onClick={handleSpeakerClick}>
             <Image
-              className={`${
-                isMuted ? 'hidden' : ''
-              } h-[20px] w-[20px] cursor-pointer opacity-40 hover:opacity-80`}
+              className={`${isMuted ? 'hidden' : ''} cursor-pointer opacity-40 hover:opacity-80`}
               src={'/speaker.svg'}
               width='20'
               height='20'
@@ -112,9 +114,7 @@ function Player() {
               alt={`Volume Button`}
             />
             <Image
-              className={`${
-                isMuted ? '' : 'hidden'
-              } h-[20px] w-[20px] cursor-pointer opacity-40 hover:opacity-80`}
+              className={`${isMuted ? '' : 'hidden'} cursor-pointer opacity-40 hover:opacity-80`}
               src={'/mute.svg'}
               width='20'
               height='20'
@@ -122,7 +122,16 @@ function Player() {
               alt={`Mute Button`}
             />
           </div>
-          <Slider percentage={percentage} onChange={onChange} />
+          <div>
+            <Slider percentage={percentage} onChange={onChange} />
+            <input
+              style={{ backgroundSize: ((percentage - 0) * 100) / (100 - 0) + '% 100%' }}
+              className='cursor-pointer'
+              type='range'
+              step='0.01'
+              onChange={testChange}
+            />
+          </div>
         </div>
       </div>
     </div>
