@@ -1,6 +1,5 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import Image from 'next/image';
-import Slider from './Slider';
 
 function Player() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -9,26 +8,29 @@ function Player() {
   const [percentage, setPercentage] = useState<number>(50);
   const [savePercentage, setSavePercentage] = useState<number>(percentage);
 
+  const rangeRef = useRef<HTMLInputElement>(null);
+
   const handlePlayClick = () => {
     setIsPlaying(!isPlaying);
   };
 
   const handleSpeakerClick = () => {
-    if (percentage === 0 && isMuted) {
+    if (!(rangeRef.current && rangeRef.current.value)) return;
+
+    if (rangeRef.current.value === '0' && isMuted) {
+      rangeRef.current.value = String(savePercentage);
       setPercentage(savePercentage);
     } else {
+      rangeRef.current.value = '0';
       setSavePercentage(percentage);
       setPercentage(0);
     }
+
     setIsMuted(!isMuted);
   };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (isMuted) setIsMuted(false);
-    setPercentage(Number(event.target.value));
-  };
-
-  const testChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPercentage(Number(event.target.value));
   };
 
@@ -122,16 +124,14 @@ function Player() {
               alt={`Mute Button`}
             />
           </div>
-          <div>
-            <Slider percentage={percentage} onChange={onChange} />
-            <input
-              style={{ backgroundSize: ((percentage - 0) * 100) / (100 - 0) + '% 100%' }}
-              className='cursor-pointer'
-              type='range'
-              step='0.01'
-              onChange={testChange}
-            />
-          </div>
+          <input
+            style={{ backgroundSize: ((percentage - 0) * 100) / (100 - 0) + '% 100%' }}
+            className='cursor-pointer'
+            type='range'
+            step='0.01'
+            ref={rangeRef}
+            onChange={handleVolumeChange}
+          />
         </div>
       </div>
     </div>
