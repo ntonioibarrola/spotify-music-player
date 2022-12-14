@@ -1,7 +1,20 @@
-import { signOut } from 'next-auth/react';
+import { useEffect } from 'react';
+import { signOut, useSession } from 'next-auth/react';
+import { usePlaylistStore } from '../contexts/spotify-contexts';
 import Image from 'next/image';
+import useSpotify from '../hooks/useSpotify';
 
 function Sidebar() {
+  const { data: session } = useSession();
+  const { playlists, setPlaylists } = usePlaylistStore();
+  const spotifyApi = useSpotify();
+
+  useEffect(() => {
+    if (spotifyApi.getAccessToken()) {
+      setPlaylists(spotifyApi);
+    }
+  }, [session, spotifyApi]);
+
   const main = [
     { name: 'Home', source: '/home.svg', alt: 'Home Icon' },
     { name: 'Search', source: '/search.svg', alt: 'Search Icon' },
@@ -54,12 +67,9 @@ function Sidebar() {
         ))}
       </ul>
       <ul>
-        {['Sad Boi Hours', 'Boss Girl', 'Rave', 'Minecraft'].map((playlist, index) => (
-          <li
-            key={`${playlist} ${index}`}
-            className='cursor-pointer rounded-xl p-3 hover:bg-spotify-200'
-          >
-            <p className='font-semibold'>{playlist}</p>
+        {playlists.map((playlist) => (
+          <li key={playlist.id} className='cursor-pointer rounded-xl p-3 hover:bg-spotify-200'>
+            <p className='font-semibold'>{playlist.name}</p>
           </li>
         ))}
       </ul>
