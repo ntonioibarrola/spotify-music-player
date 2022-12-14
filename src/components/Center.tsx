@@ -1,3 +1,4 @@
+import { usePlaylistStore } from '../contexts/spotify-contexts';
 import Image from 'next/image';
 
 interface DummyData {
@@ -37,9 +38,30 @@ const dummyData: Array<DummyData> = [
 ];
 
 function Center() {
+  const { playlist } = usePlaylistStore();
+
+  const formatDate = (isoDateString: string) => {
+    const formattedDate = new Date(isoDateString);
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    };
+
+    return formattedDate.toLocaleDateString('en-US', options);
+  };
+
+  const formatTime = (timeInMilliseconds: number | undefined) => {
+    if (!timeInMilliseconds) return;
+
+    const formattedTime = new Date(timeInMilliseconds);
+    return `${formattedTime.getMinutes()}:${String(formattedTime.getSeconds()).padStart(2, '0')}`;
+  };
+
   return (
-    <div className='flex flex-grow justify-center bg-spotify-100'>
-      <div className='relative top-full h-[calc(100vh-0.75rem)] w-[calc(100%-2rem)] -translate-y-full overflow-y-scroll rounded-t-xl bg-offwhite drop-shadow-[0_0_10px_#1fbb5d]'>
+    <div className='flex h-full w-full justify-center bg-spotify-100'>
+      <div className='relative top-full h-[calc(100%-0.75rem)] w-[calc(100%-2rem)] -translate-y-full overflow-y-scroll rounded-t-xl bg-offwhite drop-shadow-[0_0_10px_#1fbb5d]'>
         <div className='flex h-auto w-full items-center justify-between py-5 px-8'>
           <div className='flex gap-x-2'>
             <Image
@@ -65,14 +87,16 @@ function Center() {
               height='45'
               alt='Profile Image'
             />
-            {/* <p className='font-bold'>{session?.user?.name}</p>
-            <Image src={'/chevron-down.svg'} width='17' height='17' alt='Account Dropdown Icon' /> */}
           </div>
         </div>
-        <div className='flex py-5 px-40'>
+        <div className='flex h-auto py-5 px-40'>
           <Image
             className='h-[208px] w-[208px] rounded-lg object-cover'
-            src={'/dummy-playlistcover.png'}
+            src={
+              playlist && playlist.images[0]
+                ? (playlist?.images[0]?.url as string)
+                : '/placeholder-image.jpg'
+            }
             width='208'
             height='208'
             alt='Playlist Cover'
@@ -103,8 +127,8 @@ function Center() {
             </div>
           </div>
         </div>
-        <div className='h-10'>{/* Player */}</div>
-        <div className='w-full px-40 text-left'>
+        <div className='h-10' />
+        <div className='h-auto w-full px-40 pb-10 text-left'>
           <table className='w-full text-charcoal'>
             <thead>
               <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-zinc-500'>
@@ -124,7 +148,44 @@ function Center() {
               </tr>
             </thead>
             <tbody>
-              {dummyData.map((data: DummyData, index: number) => (
+              {playlist?.tracks.items.map((item, index) => (
+                <tr
+                  key={`${item.track!.id}`}
+                  className='flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 hover:bg-gray-200'
+                >
+                  <td className='text-[0.95rem] text-zinc-500'>{index + 1}</td>
+                  <td className='before:content-[" "] relative flex w-[40%] items-center before:invisible'>
+                    <Image
+                      className='h-[50px] w-[50px] rounded-lg'
+                      src={item.track?.album.images[0]?.url as string}
+                      width='50'
+                      height='50'
+                      alt={`${item.track?.album.name} Album Cover`}
+                    />
+                    <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
+                      <span className='text-[1rem]'>{item.track?.name}</span>
+                      <br />
+                      <span className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
+                        {item.track?.artists.map((artist) => artist.name).join(', ')}
+                      </span>
+                    </div>
+                  </td>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
+                    <span className='absolute left-0 right-0 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] hover:underline'>
+                      {item.track?.album.name}
+                    </span>
+                  </td>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
+                    <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem]'>
+                      {formatDate(item.added_at)}
+                    </span>
+                  </td>
+                  <td className='w-[10%] text-right text-[0.95rem] tracking-widest text-zinc-500'>
+                    {formatTime(item.track?.duration_ms)}
+                  </td>
+                </tr>
+              ))}
+              {/* {dummyData.map((data: DummyData, index: number) => (
                 <tr
                   key={`${data.songTitle}`}
                   className='flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 hover:bg-gray-200'
@@ -160,7 +221,7 @@ function Center() {
                     {data.songLength}
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </div>

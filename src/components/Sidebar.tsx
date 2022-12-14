@@ -1,19 +1,11 @@
-import { useEffect } from 'react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 
 function Sidebar() {
-  const { data: session } = useSession();
-  const { playlists, setPlaylists } = usePlaylistStore();
   const spotifyApi = useSpotify();
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      setPlaylists(spotifyApi);
-    }
-  }, [session, spotifyApi]);
+  const { playlists, playlist: currentPlaylist, getPlaylist } = usePlaylistStore();
 
   const main = [
     { name: 'Home', source: '/home.svg', alt: 'Home Icon' },
@@ -28,7 +20,7 @@ function Sidebar() {
 
   return (
     <div
-      className='scrollbar-hide h-screen w-1/6 min-w-[300px] max-w-[380px] space-y-12 overflow-y-scroll bg-spotify-100 px-7 py-20
+      className='scrollbar-hide h-full w-full space-y-12 overflow-y-scroll bg-spotify-100 px-7 py-20
       text-base font-bold text-white'
     >
       <div>
@@ -68,7 +60,13 @@ function Sidebar() {
       </ul>
       <ul>
         {playlists.map((playlist) => (
-          <li key={playlist.id} className='cursor-pointer rounded-xl p-3 hover:bg-spotify-200'>
+          <li
+            key={playlist.id}
+            className={`${
+              playlist.id === currentPlaylist?.id && 'bg-spotify-200'
+            } cursor-pointer rounded-xl p-3 hover:bg-spotify-200`}
+            onClick={() => getPlaylist(spotifyApi, playlist.id)}
+          >
             <p className='font-semibold'>{playlist.name}</p>
           </li>
         ))}
