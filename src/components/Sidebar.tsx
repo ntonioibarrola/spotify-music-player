@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 
 function Sidebar() {
@@ -17,6 +18,9 @@ function Sidebar() {
       className='scrollbar-hide h-screen w-1/6 min-w-[300px] max-w-[380px] space-y-12 overflow-y-scroll bg-spotify-100 px-7 py-20
       text-base font-bold text-white'
     >
+      <div>
+        <button onClick={() => signOut()}>Logout</button>
+      </div>
       <ul>
         {main.map((item) => (
           <li
