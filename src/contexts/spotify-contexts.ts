@@ -33,9 +33,21 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
       set({ playlist: data.body });
     });
   },
+
   getPlaylist: async (spotifyApi, playlistId) => {
     spotifyApi.getPlaylist(playlistId).then((data) => {
       set({ playlist: data.body });
+      set({ playlistId: playlistId });
     });
   },
+}));
+
+interface TrackState {
+  activeTrackId: string;
+  setActiveTrack: (trackId: TrackState['activeTrackId']) => void;
+}
+
+export const useTrackStore = create<TrackState>((set) => ({
+  activeTrackId: '',
+  setActiveTrack: (activeTrackId) => set({ activeTrackId }),
 }));

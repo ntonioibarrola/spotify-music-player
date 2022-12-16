@@ -36,8 +36,8 @@ function Player() {
 
   return (
     <div
-      className='flex h-full w-full items-center justify-between border-t-4 border-solid border-t-white
-      bg-offwhite px-10 text-charcoal'
+      className='flex h-full w-full items-center justify-between rounded-b-lg border-t-4 border-solid
+      border-t-white px-10 text-charcoal'
     >
       <div className='flex items-center gap-x-5'>
         <Image

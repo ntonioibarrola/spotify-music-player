@@ -1,4 +1,11 @@
+import { useSession } from 'next-auth/react';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
+import {
+  getPlaylistDuration,
+  getSongArtists,
+  getSongDuration,
+  getAddedByDate,
+} from '../utils/helper';
 import Image from 'next/image';
 
 interface DummyData {
@@ -38,26 +45,8 @@ const dummyData: Array<DummyData> = [
 ];
 
 function Center() {
+  const { data: session } = useSession();
   const { playlist } = usePlaylistStore();
-
-  const formatDate = (isoDateString: string) => {
-    const formattedDate = new Date(isoDateString);
-
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    };
-
-    return formattedDate.toLocaleDateString('en-US', options);
-  };
-
-  const formatTime = (timeInMilliseconds: number | undefined) => {
-    if (!timeInMilliseconds) return;
-
-    const formattedTime = new Date(timeInMilliseconds);
-    return `${formattedTime.getMinutes()}:${String(formattedTime.getSeconds()).padStart(2, '0')}`;
-  };
 
   return (
     <div className='flex h-full w-full justify-center bg-spotify-100'>
@@ -82,7 +71,9 @@ function Center() {
           <div className='flex items-center gap-4'>
             <Image
               className='h-[45px] w-[45px] rounded-full object-cover'
-              src={'/dummy-profileimage.jpg'}
+              src={
+                session && session.user ? (session.user.image as string) : '/placeholder-avatar.png'
+              }
               width='45'
               height='45'
               alt='Profile Image'
@@ -93,7 +84,7 @@ function Center() {
           <Image
             className='h-[208px] w-[208px] rounded-lg object-cover'
             src={
-              playlist && playlist.images[0]
+              playlist && playlist.images
                 ? (playlist?.images[0]?.url as string)
                 : '/placeholder-image.jpg'
             }
@@ -104,25 +95,25 @@ function Center() {
           <div className='ml-8 flex flex-col justify-end font-bold text-charcoal'>
             <div className='text-[0.8rem] font-semibold'>PLAYLIST</div>
             <div className='inline-block overflow-hidden text-ellipsis font-poppins fluid-text-5xl'>
-              Playlist Name
+              {playlist?.name}
             </div>
             <div className='flex items-center space-x-2 text-sm font-normal'>
-              <Image
+              {/* <Image
                 className='h-[40px] w-[40px] flex-shrink-0 rounded-full object-cover'
-                src={'/dummy-profileimage.jpg'}
+                src={}
                 width='40'
                 height='40'
                 alt='Profile Image'
-              />
+              /> */}
               <span className='cursor-pointer whitespace-nowrap font-semibold hover:underline'>
-                antonioib
+                {playlist?.owner.display_name}
               </span>
               <span className='space-x-2 text-zinc-500'>
                 <span className='font-poppins'>•</span>
-                <span>401 Likes</span>
+                <span>{playlist && playlist.followers && playlist?.followers.total} likes</span>
                 <span className='font-poppins'>•</span>
-                <span>24 Songs,</span>
-                <span>1 hr 32 min</span>
+                <span>{playlist?.tracks.total} songs,</span>
+                <span>{playlist && getPlaylistDuration(playlist.tracks.items)}</span>
               </span>
             </div>
           </div>
@@ -166,7 +157,7 @@ function Center() {
                       <span className='text-[1rem]'>{item.track?.name}</span>
                       <br />
                       <span className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
-                        {item.track?.artists.map((artist) => artist.name).join(', ')}
+                        {getSongArtists(item.track?.artists)}
                       </span>
                     </div>
                   </td>
@@ -177,11 +168,11 @@ function Center() {
                   </td>
                   <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
                     <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem]'>
-                      {formatDate(item.added_at)}
+                      {getAddedByDate(item.added_at)}
                     </span>
                   </td>
                   <td className='w-[10%] text-right text-[0.95rem] tracking-widest text-zinc-500'>
-                    {formatTime(item.track?.duration_ms)}
+                    {getSongDuration(item.track?.duration_ms)}
                   </td>
                 </tr>
               ))}
