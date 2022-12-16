@@ -1,5 +1,5 @@
 import { type DefaultSession } from 'next-auth';
-import { ExtendedToken } from './index';
+import { ExtendedToken } from './authentication';
 
 declare module 'next-auth' {
   /**

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { spotifyApi } from '../utils/spotify';
-import { ExtendedSession, TokenError } from '../types';
+import { ExtendedSession, TokenError } from '../types/authentication';
 
 const useSpotify = () => {
   const { data: session } = useSession();

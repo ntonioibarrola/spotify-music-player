@@ -1,5 +1,5 @@
 import NextAuth, { CallbacksOptions, type NextAuthOptions } from 'next-auth';
-import { ExtendedToken, TokenError } from '../../../types/index';
+import { ExtendedToken, TokenError } from '../../../types/authentication';
 import { scopes, spotifyApi } from '../../../utils/spotify';
 import { env } from '../../../env/server.mjs';
 import DiscordProvider from 'next-auth/providers/discord';

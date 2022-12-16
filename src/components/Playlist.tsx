@@ -1,11 +1,7 @@
-import { useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
-import {
-  getPlaylistDuration,
-  getSongArtists,
-  getSongDuration,
-  getAddedByDate,
-} from '../utils/helper';
+import { getPlaylistDuration } from '../utils/helper';
+import { SpotifyTrack } from '../types/spotify';
 import Image from 'next/image';
 import Track from './Track';
 
@@ -220,10 +216,13 @@ function Playlist() {
         <tbody>
           {playlist &&
             playlist.tracks.items.map((item, index) => (
-              <Track key={`${item.track!.id}`} item={item} index={index} />
+              <Track key={`${item.track?.id}`} track={item.track as SpotifyTrack} index={index} />
             ))}
         </tbody>
       </table>
+      <div>
+        <button onClick={() => signOut()}>Logout</button>
+      </div>
     </div>
   );
 }

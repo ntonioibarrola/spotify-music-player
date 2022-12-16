@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
@@ -12,12 +12,23 @@ import useSpotify from '../hooks/useSpotify';
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  const { playlistId, getPlaylistContexts } = usePlaylistStore();
+  const { playlistId, getPlaylists, getPlaylist, setPlaylists, setPlaylist } = usePlaylistStore();
   const spotifyApi = useSpotify();
+
+  const fetchPlaylists = useCallback(async () => {
+    const playlists = await getPlaylists(spotifyApi);
+    setPlaylists(playlists);
+  }, []);
+
+  const fetchPlaylist = useCallback(async () => {
+    const playlist = await getPlaylist(spotifyApi, playlistId);
+    setPlaylist(playlist);
+  }, []);
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
-      getPlaylistContexts(spotifyApi, playlistId);
+      fetchPlaylists();
+      fetchPlaylist();
     }
   }, [session, spotifyApi]);
 
