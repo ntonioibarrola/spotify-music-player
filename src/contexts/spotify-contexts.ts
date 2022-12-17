@@ -1,6 +1,6 @@
 import create from 'zustand';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { SpotifyPlaylist, SpotifyPlaylists } from '../types/spotify';
+import { SpotifyPlaylist, SpotifyPlaylists, SpotifyTrack } from '../types/spotify';
 
 interface PlaylistState {
   playlists: SpotifyPlaylists;
@@ -44,25 +44,37 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
 }));
 
 interface TrackState {
+  track: SpotifyTrack | null;
+  trackId: string | null;
+  previewTrackId: string | null;
+  isTrackPlaying: boolean;
   audio: HTMLAudioElement | null;
   fadeIn: ReturnType<typeof setInterval> | null;
   fadeOut: ReturnType<typeof setInterval> | null;
-  trackId: string | null;
 
+  setTrack: (track: TrackState['track']) => void;
+  setTrackId: (trackId: TrackState['trackId']) => void;
+  setPreviewTrackId: (previewTrackId: TrackState['trackId']) => void;
+  setIsTrackPlaying: (isTrackPlaying: TrackState['isTrackPlaying']) => void;
   setAudio: (audio: TrackState['audio']) => void;
   setFadeIn: (fadeIn: TrackState['fadeIn']) => void;
   setFadeOut: (fadeOut: TrackState['fadeOut']) => void;
-  setTrackId: (trackId: TrackState['trackId']) => void;
 }
 
 export const useTrackStore = create<TrackState>((set) => ({
+  track: null,
+  trackId: null,
+  previewTrackId: null,
+  isTrackPlaying: false,
   audio: null,
   fadeIn: null,
   fadeOut: null,
-  trackId: null,
 
+  setTrack: (track) => set({ track }),
+  setTrackId: (trackId) => set({ trackId }),
+  setPreviewTrackId: (previewTrackId) => set({ previewTrackId }),
+  setIsTrackPlaying: (isTrackPlaying) => set({ isTrackPlaying }),
   setAudio: (audio) => set({ audio }),
   setFadeIn: (fadeIn) => set({ fadeIn }),
   setFadeOut: (fadeOut) => set({ fadeOut }),
-  setTrackId: (trackId) => set({ trackId }),
 }));

@@ -1,17 +1,31 @@
 import { ChangeEvent, useRef, useState } from 'react';
+import { useTrackStore } from '../contexts/spotify-contexts';
+import { getSongArtists, getSongDuration } from '../utils/helper';
 import Image from 'next/image';
+import useSpotify from '../hooks/useSpotify';
 
 function Player() {
+  const { track, isTrackPlaying, setIsTrackPlaying } = useTrackStore();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-
   const [percentage, setPercentage] = useState<number>(50);
   const [savePercentage, setSavePercentage] = useState<number>(percentage);
+  const spotifyApi = useSpotify();
 
   const rangeRef = useRef<HTMLInputElement>(null);
 
   const handlePlayClick = () => {
-    setIsPlaying(!isPlaying);
+    if (isTrackPlaying) {
+      spotifyApi.getMyCurrentPlaybackState().then((data) => {
+        if (data.body.is_playing) {
+          spotifyApi.pause();
+          setIsTrackPlaying(false);
+        }
+      });
+    } else {
+      setIsTrackPlaying(true);
+      spotifyApi.play();
+    }
   };
 
   const handleSpeakerClick = () => {
@@ -42,26 +56,28 @@ function Player() {
       <div className='flex items-center gap-x-5'>
         <Image
           className={`${
-            isPlaying ? 'animate-spin-slow-running' : 'animate-spin-slow-paused'
+            isTrackPlaying ? 'animate-spin-slow-running' : 'animate-spin-slow-paused'
           } h-[80px] w-[80px] rounded-full border-[3px] border-solid border-offwhite drop-shadow-[0_0_8px_#b8bdc6]`}
-          src={'/dummy-nurture.png'}
+          src={track?.album.images[0] ? track.album.images[0].url : '/placeholder-image.jpg'}
           width='80'
           height='80'
           draggable={false}
-          alt={`Nurture Album Cover`}
+          alt={`${track?.album.name} Album Cover`}
         />
         <div className='leading-6'>
-          <p className='cursor-pointer font-semibold hover:underline'>Something Comforting</p>
+          <p className='cursor-pointer font-semibold hover:underline'>
+            {track ? track.name : 'No Track Playing'}
+          </p>
           <p className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
-            Porter Robinson
+            {track ? getSongArtists(track.artists) : 'No Artist(s)'}
           </p>
         </div>
       </div>
       <div className='flex flex-col items-center gap-y-2'>
         <div className='space-x-2 text-sm text-zinc-500'>
-          <span>1:04</span>
+          <span>{track ? '0:00' : '--:--'}</span>
           <span className='text-spotify-100'>/</span>
-          <span>4:41</span>
+          <span>{track ? getSongDuration(track.duration_ms) : '--:--'}</span>
         </div>
         <div className='flex items-center gap-x-5'>
           <Image
@@ -73,26 +89,39 @@ function Player() {
             alt={`Previous Button`}
           />
           <div className='flex-shrink-0' onClick={handlePlayClick}>
-            <Image
-              className={`${
-                isPlaying ? 'hidden' : ''
-              } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
-              src={'/play.svg'}
-              width='60'
-              height='60'
-              draggable={false}
-              alt={`Play Button`}
-            />
-            <Image
-              className={`${
-                isPlaying ? '' : 'hidden'
-              } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
-              src={'/pause.svg'}
-              width='60'
-              height='60'
-              draggable={false}
-              alt={`Pause Button`}
-            />
+            {track ? (
+              <>
+                <Image
+                  className={`${
+                    isTrackPlaying ? 'hidden' : ''
+                  } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
+                  src={'/play.svg'}
+                  width='60'
+                  height='60'
+                  draggable={false}
+                  alt={`Play Button`}
+                />
+                <Image
+                  className={`${
+                    isTrackPlaying ? '' : 'hidden'
+                  } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
+                  src={'/pause.svg'}
+                  width='60'
+                  height='60'
+                  draggable={false}
+                  alt={`Pause Button`}
+                />
+              </>
+            ) : (
+              <Image
+                className='cursor-not-allowed opacity-50'
+                src={'/play.svg'}
+                width='60'
+                height='60'
+                draggable={false}
+                alt={`Disabled Play Button`}
+              />
+            )}
           </div>
           <Image
             className='cursor-pointer opacity-40 hover:opacity-80'
