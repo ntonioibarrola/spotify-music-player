@@ -15,13 +15,13 @@ const Dropdown = () => {
   }, []);
 
   return (
-    <div className='relative top-0 right-0 flex w-full max-w-sm justify-end'>
+    <div>
       <Popover className='relative'>
         {({ close }) => (
           <>
             <Popover.Button
-              className='group inline-flex items-center rounded-md bg-spotify-100 px-3 py-2 text-sm font-medium text-white text-opacity-90 hover:text-opacity-100
-              focus:outline-none ui-open:text-opacity-100'
+              className='group inline-flex items-center rounded-md bg-spotify-100 px-3 py-2 text-sm font-bold text-white text-opacity-90 hover:text-opacity-100
+              hover:opacity-90 focus:outline-none ui-open:text-opacity-100'
             >
               <span>My Playlists</span>
               <Image

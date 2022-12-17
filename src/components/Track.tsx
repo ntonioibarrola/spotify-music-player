@@ -1,10 +1,11 @@
 import { getSongArtists, getSongDuration } from '../utils/helper';
-import { useTrackStore } from '../contexts/spotify-contexts';
+import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
 import { SpotifyTrack } from '../types/spotify';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 
 export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track, index }) => {
+  const { setMessage, setIsMessageOpen } = useMessageStore();
   const {
     previewTrackId,
     isTrackPlaying,
@@ -23,12 +24,27 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
 
   const playTrack = () => {
     stopPreviewTrack();
-    setTrack(track);
-    setTrackId(track.id);
-    setIsTrackPlaying(true);
-    spotifyApi.play({
-      uris: [track.uri],
-    });
+    spotifyApi
+      .play({
+        uris: [track.uri],
+      })
+      .then(() => {
+        setTrack(track);
+        setTrackId(track.id);
+        setIsTrackPlaying(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setMessage({
+          type: 'warning',
+          title: 'Warning!',
+          description: `Please connect with Spotify by interacting with Spotify's desktop or browser application (e.g. click the play button).`,
+          // description: `An active Spotify device is required to play songs. Please have Spotify's desktop or browser application in the background and interact with the device at least once (e.g. click the play button).`,
+          url: 'https://open.spotify.com/',
+          button: 'Got it, thanks!',
+        });
+        setIsMessageOpen(true);
+      });
   };
 
   const playPreviewTrack = () => {
@@ -42,12 +58,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
     newAudio
       .play()
       .then()
-      .catch((error) => {
-        console.log(error);
-        console.log(
-          'Please connect with Spotify by interacting with the desktop application (e.g. click a button).',
-        );
-      });
+      .catch((error) => {});
 
     const timer = setInterval(() => {
       if (newAudio.volume < 0.1) {
@@ -104,7 +115,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
       onFocus={playPreviewTrack}
       onBlur={stopPreviewTrack}
     >
-      <td className='relative w-[5%] text-[0.95rem] text-zinc-500'>{index + 1}</td>
+      <td className='relative w-[5%] text-[0.95rem] text-gray-500'>{index + 1}</td>
       <td className='before:content-[" "] relative flex w-[85%] items-center before:invisible'>
         <Image
           className='h-[50px] w-[50px] rounded-lg'
@@ -116,12 +127,12 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
         <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
           <span className='text-base'>{track?.name}</span>
           <br />
-          <span className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
+          <span className='cursor-pointer text-[0.95rem] text-gray-500 hover:underline'>
             {getSongArtists(track?.artists)}
           </span>
         </div>
       </td>
-      <td className='relative w-[10%] text-right text-[0.95rem] tracking-widest text-zinc-500'>
+      <td className='relative w-[10%] text-right text-[0.95rem] tracking-widest text-gray-500'>
         {getSongDuration(track?.duration_ms)}
       </td>
     </tr>

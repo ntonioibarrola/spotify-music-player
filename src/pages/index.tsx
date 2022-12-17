@@ -6,6 +6,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Center from '../components/Center';
 import Sidebar from '../components/Sidebar';
+import Message from '../components/Message';
 import Playlist from '../components/Playlist';
 import Player from '../components/Player';
 import useSpotify from '../hooks/useSpotify';
@@ -52,6 +53,7 @@ const Home: NextPage = () => {
         </div>
       </main> */}
       <main className='grid h-screen grid-cols-[1fr_minmax(950px,_1500px)_1fr] bg-spotify-100'>
+        <Message />
         <div className='col-start-2 col-end-3 flex flex-col justify-center overflow-y-hidden px-10'>
           <div className='grid h-[85%] grid-cols-[1fr_32rem_1fr] grid-rows-[1fr_8rem] overflow-x-hidden rounded-lg bg-offwhite'>
             <div className='col-start-1 col-end-4 row-start-1 row-end-2 overflow-x-hidden overflow-y-scroll py-10'>

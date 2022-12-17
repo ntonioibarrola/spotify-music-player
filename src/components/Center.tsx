@@ -108,7 +108,7 @@ function Center() {
               <span className='cursor-pointer whitespace-nowrap font-semibold hover:underline'>
                 {playlist?.owner.display_name}
               </span>
-              <span className='space-x-2 text-zinc-500'>
+              <span className='space-x-2 text-gray-500'>
                 <span className='font-poppins'>•</span>
                 <span>{playlist && playlist.followers && playlist?.followers.total} likes</span>
                 <span className='font-poppins'>•</span>
@@ -122,7 +122,7 @@ function Center() {
         <div className='h-auto w-full px-40 pb-10 text-left'>
           <table className='w-full text-charcoal'>
             <thead>
-              <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-zinc-500'>
+              <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-gray-500'>
                 <th className='font-normal'>#</th>
                 <th className='w-[40%] font-normal'>TITLE</th>
                 <th className='w-[25%] font-normal'>ALBUM</th>
@@ -144,7 +144,7 @@ function Center() {
                   key={`${item.track!.id}`}
                   className='flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 hover:bg-gray-200'
                 >
-                  <td className='text-[0.95rem] text-zinc-500'>{index + 1}</td>
+                  <td className='text-[0.95rem] text-gray-500'>{index + 1}</td>
                   <td className='before:content-[" "] relative flex w-[40%] items-center before:invisible'>
                     <Image
                       className='h-[50px] w-[50px] rounded-lg'
@@ -156,22 +156,22 @@ function Center() {
                     <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
                       <span className='text-[1rem]'>{item.track?.name}</span>
                       <br />
-                      <span className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
+                      <span className='cursor-pointer text-[0.95rem] text-gray-500 hover:underline'>
                         {getSongArtists(item.track?.artists)}
                       </span>
                     </div>
                   </td>
-                  <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-gray-500 before:invisible'>
                     <span className='absolute left-0 right-0 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] hover:underline'>
                       {item.track?.album.name}
                     </span>
                   </td>
-                  <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-gray-500 before:invisible'>
                     <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem]'>
                       {getAddedByDate(item.added_at)}
                     </span>
                   </td>
-                  <td className='w-[10%] text-right text-[0.95rem] tracking-widest text-zinc-500'>
+                  <td className='w-[10%] text-right text-[0.95rem] tracking-widest text-gray-500'>
                     {getSongDuration(item.track?.duration_ms)}
                   </td>
                 </tr>
@@ -181,7 +181,7 @@ function Center() {
                   key={`${data.songTitle}`}
                   className='flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 hover:bg-gray-200'
                 >
-                  <td className='text-[0.95rem] text-zinc-500'>{index + 1}</td>
+                  <td className='text-[0.95rem] text-gray-500'>{index + 1}</td>
                   <td className='before:content-[" "] relative flex w-[40%] items-center before:invisible'>
                     <Image
                       className='h-[50px] w-[50px] rounded-lg'
@@ -193,22 +193,22 @@ function Center() {
                     <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
                       <span className='text-[1rem]'>{data.songTitle}</span>
                       <br />
-                      <span className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
+                      <span className='cursor-pointer text-[0.95rem] text-gray-500 hover:underline'>
                         {data.artistName}
                       </span>
                     </div>
                   </td>
-                  <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-gray-500 before:invisible'>
                     <span className='absolute left-0 right-0 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] hover:underline'>
                       {data.albumTitle}
                     </span>
                   </td>
-                  <td className='before:content-[" "] relative flex w-[25%] items-center text-zinc-500 before:invisible'>
+                  <td className='before:content-[" "] relative flex w-[25%] items-center text-gray-500 before:invisible'>
                     <span className='absolute left-0 right-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem]'>
                       {data.dateAdded}
                     </span>
                   </td>
-                  <td className='w-[10%] text-right text-[0.95rem] tracking-widest text-zinc-500'>
+                  <td className='w-[10%] text-right text-[0.95rem] tracking-widest text-gray-500'>
                     {data.songLength}
                   </td>
                 </tr>

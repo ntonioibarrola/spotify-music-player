@@ -20,6 +20,9 @@ module.exports = {
         },
         charcoal: '#2a2829',
         offwhite: '#edf0f4',
+        error: '#ff4242',
+        warning: '#ffc021',
+        info: '#2f86eb',
       },
       fontFamily: {
         gingerbold: ['F37 Ginger', 'sans-serif'],

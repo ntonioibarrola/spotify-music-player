@@ -188,7 +188,7 @@ function Playlist() {
             <span className='cursor-pointer whitespace-nowrap font-semibold hover:underline'>
               {playlist?.owner.display_name}
             </span>
-            <span className='space-x-2 text-zinc-500'>
+            <span className='space-x-2 text-gray-500'>
               <span className='font-poppins'>•</span>
               <span>{playlist && playlist.followers && playlist?.followers.total} likes</span>
               <span className='font-poppins'>•</span>
@@ -198,12 +198,18 @@ function Playlist() {
           </div>
         </div>
       </div>
-      <div className='flex justify-end'>
+      <div className='flex justify-end gap-2'>
+        <button
+          className='rounded-md border-[1px] border-solid border-gray-500 px-5 text-sm font-bold opacity-40 hover:opacity-80'
+          onClick={() => signOut()}
+        >
+          Logout
+        </button>
         <Dropdown />
       </div>
       <table className='h-auto w-full text-left text-charcoal'>
         <thead>
-          <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-zinc-500'>
+          <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-gray-500'>
             <th className='w-[5%] font-normal'>#</th>
             <th className='w-[85%] font-normal'>TITLE</th>
             <th className='flex w-[10%] flex-shrink-0 items-center justify-end font-normal'>
@@ -224,9 +230,6 @@ function Playlist() {
             ))}
         </tbody>
       </table>
-      <div>
-        <button onClick={() => signOut()}>Logout</button>
-      </div>
     </div>
   );
 }

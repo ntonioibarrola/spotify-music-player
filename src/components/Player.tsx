@@ -1,11 +1,12 @@
 import { ChangeEvent, useRef, useState } from 'react';
-import { useTrackStore } from '../contexts/spotify-contexts';
+import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
 import { getSongArtists, getSongDuration } from '../utils/helper';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 
 function Player() {
-  const { track, isTrackPlaying, setIsTrackPlaying } = useTrackStore();
+  const { track, isTrackPlaying, setTrack, setIsTrackPlaying } = useTrackStore();
+  const { setMessage, setIsMessageOpen } = useMessageStore();
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [percentage, setPercentage] = useState<number>(50);
   const [savePercentage, setSavePercentage] = useState<number>(percentage);
@@ -14,16 +15,32 @@ function Player() {
   const rangeRef = useRef<HTMLInputElement>(null);
 
   const handlePlayClick = () => {
+    if (!track) return;
+
     if (isTrackPlaying) {
       spotifyApi.getMyCurrentPlaybackState().then((data) => {
-        if (data.body.is_playing) {
+        if (data.body && data.body.is_playing) {
           spotifyApi.pause();
+        } else {
+          setTrack(null);
         }
-        setIsTrackPlaying(false);
       });
+      setIsTrackPlaying(false);
     } else {
-      setIsTrackPlaying(true);
-      spotifyApi.play();
+      spotifyApi
+        .play()
+        .then(() => setIsTrackPlaying(true))
+        .catch((error) => {
+          console.log(error);
+          setMessage({
+            type: 'warning',
+            title: 'Warning!',
+            description: `Please connect with Spotify by interacting with Spotify's desktop or browser application (e.g. click the play button).`,
+            url: 'https://open.spotify.com/',
+            button: 'Got it, thanks!',
+          });
+          setIsMessageOpen(true);
+        });
     }
   };
 
@@ -56,7 +73,7 @@ function Player() {
         <Image
           className={`${
             isTrackPlaying ? 'animate-spin-slow-running' : 'animate-spin-slow-paused'
-          } h-[80px] w-[80px] rounded-full border-[3px] border-solid border-offwhite drop-shadow-[0_0_8px_#b8bdc6]`}
+          } h-[80px] w-[80px] rounded-full border-[3px] border-solid border-offwhite object-cover drop-shadow-[0_0_8px_#b8bdc6]`}
           src={track?.album.images[0] ? track.album.images[0].url : '/placeholder-image.jpg'}
           width='80'
           height='80'
@@ -67,13 +84,13 @@ function Player() {
           <p className='cursor-pointer overflow-hidden text-ellipsis font-semibold hover:underline'>
             {track ? track.name : 'No Track Playing'}
           </p>
-          <p className='cursor-pointer overflow-hidden text-ellipsis text-[0.95rem] text-zinc-500 hover:underline'>
+          <p className='cursor-pointer overflow-hidden text-ellipsis text-[0.95rem] text-gray-500 hover:underline'>
             {track ? getSongArtists(track.artists) : 'No Artist(s)'}
           </p>
         </div>
       </div>
       <div className='mx-10 flex w-[20%] flex-col items-center gap-y-2'>
-        <div className='space-x-2 text-sm text-zinc-500'>
+        <div className='space-x-2 text-sm text-gray-500'>
           <span>{track ? '0:00' : '--:--'}</span>
           <span className='text-spotify-100'>/</span>
           <span>{track ? getSongDuration(track.duration_ms) : '--:--'}</span>

@@ -1,6 +1,7 @@
 import create from 'zustand';
 import SpotifyWebApi from 'spotify-web-api-node';
 import { SpotifyPlaylist, SpotifyPlaylists, SpotifyTrack } from '../types/spotify';
+import { Message } from '../types/message';
 
 interface PlaylistState {
   playlists: SpotifyPlaylists;
@@ -77,4 +78,20 @@ export const useTrackStore = create<TrackState>((set) => ({
   setAudio: (audio) => set({ audio }),
   setFadeIn: (fadeIn) => set({ fadeIn }),
   setFadeOut: (fadeOut) => set({ fadeOut }),
+}));
+
+interface MessageState {
+  message: Message | null;
+  isMessageOpen: boolean;
+
+  setMessage: (message: MessageState['message']) => void;
+  setIsMessageOpen: (isMessageOpen: MessageState['isMessageOpen']) => void;
+}
+
+export const useMessageStore = create<MessageState>((set) => ({
+  message: null,
+  isMessageOpen: false,
+
+  setMessage: (message) => set({ message }),
+  setIsMessageOpen: (isMessageOpen) => set({ isMessageOpen }),
 }));
