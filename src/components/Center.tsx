@@ -50,7 +50,7 @@ function Center() {
 
   return (
     <div className='flex h-full w-full justify-center bg-spotify-100'>
-      <div className='relative top-full h-[calc(100%-0.75rem)] w-[calc(100%-2rem)] -translate-y-full overflow-y-scroll rounded-t-xl bg-offwhite drop-shadow-[0_0_10px_#1fbb5d]'>
+      <div className='relative top-full h-[calc(100%-0.75rem)] w-[calc(100%-2rem)] -translate-y-full overflow-y-scroll rounded-t-xl bg-offwhite drop-shadow-[0_0_10px_#5e82ad]'>
         <div className='flex h-auto w-full items-center justify-between py-5 px-8'>
           <div className='flex gap-x-2'>
             <Image

@@ -14,9 +14,9 @@ module.exports = {
       },
       colors: {
         spotify: {
-          100: '#1ed760',
-          200: '#1fbb5d',
-          300: '#18a456',
+          100: '#5e82ad',
+          200: '#82a3c2',
+          300: '#333b4d',
         },
         charcoal: '#2a2829',
         offwhite: '#edf0f4',
@@ -29,6 +29,8 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss/nesting'),
+    require('@tailwindcss/line-clamp'),
+    require('@headlessui/tailwindcss')({ prefix: 'ui' }),
     require('tailwindcss-fluid-type')({
       settings: {
         fontSizeMin: 0.75,

@@ -4,6 +4,7 @@ import { getPlaylistDuration } from '../utils/helper';
 import { SpotifyTrack } from '../types/spotify';
 import Image from 'next/image';
 import Track from './Track';
+import Dropdown from './Dropdown';
 
 interface DummyData {
   albumCover: string;
@@ -165,25 +166,25 @@ function Playlist() {
   const { playlist } = usePlaylistStore();
 
   return (
-    <div className='mx-auto h-auto w-[42rem] space-y-8'>
-      <div className='flex h-auto w-full'>
+    <div className='relative mx-auto h-auto w-[42rem] space-y-8'>
+      <div className='flex h-auto w-full pt-8'>
         <Image
-          className='h-[150px] w-[150px] rounded-lg object-cover'
+          className='h-[180px] w-[180px] rounded-lg object-cover'
           src={
-            playlist && playlist.images
-              ? (playlist?.images[0]?.url as string)
+            playlist && playlist.images[0]
+              ? (playlist.images[0]?.url as string)
               : '/placeholder-image.jpg'
           }
-          width='150'
-          height='150'
+          width='180'
+          height='180'
           alt='Playlist Cover'
         />
-        <div className='ml-8 flex flex-col justify-end font-bold text-charcoal'>
-          <div className='text-[0.8rem] font-semibold'>PLAYLIST</div>
-          <div className='inline-block overflow-hidden text-ellipsis font-poppins text-5xl'>
+        <div className='ml-8 flex w-full flex-col justify-end font-bold text-charcoal'>
+          <div className='w-[calc(672px-(2rem+180px))] text-[0.8rem] font-semibold'>PLAYLIST</div>
+          <div className='my-2 w-[calc(672px-(2rem+180px))] break-words font-poppins text-5xl line-clamp-2'>
             {playlist?.name}
           </div>
-          <div className='flex items-center space-x-2 text-sm font-normal'>
+          <div className='flex w-[calc(672px-(2rem+180px))] items-center space-x-2 text-sm font-normal'>
             <span className='cursor-pointer whitespace-nowrap font-semibold hover:underline'>
               {playlist?.owner.display_name}
             </span>
@@ -197,11 +198,14 @@ function Playlist() {
           </div>
         </div>
       </div>
+      <div className='flex justify-end'>
+        <Dropdown />
+      </div>
       <table className='h-auto w-full text-left text-charcoal'>
         <thead>
           <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-zinc-500'>
-            <th className='font-normal'>#</th>
-            <th className='w-[90%] font-normal'>TITLE</th>
+            <th className='w-[5%] font-normal'>#</th>
+            <th className='w-[85%] font-normal'>TITLE</th>
             <th className='flex w-[10%] flex-shrink-0 items-center justify-end font-normal'>
               <Image
                 className='h-[25px] w-[25px]'

@@ -125,12 +125,30 @@
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   }
 
+  ::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 9999px;
+    background-color: #9e9fa2;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 9999px;
+    background-color: #777779;
+  }
+
   input[type='range'] {
     width: 200px;
     height: 0.3125rem;
     border-radius: 0.5rem;
     background: white;
-    background-image: linear-gradient(#1ed760, #1ed760);
+    background-image: linear-gradient(#5e82ad, #5e82ad);
     background-repeat: no-repeat;
     appearance: none;
     -webkit-appearance: none;
@@ -143,7 +161,7 @@
     &::-webkit-slider-thumb {
       height: 0.9rem;
       width: 0.9rem;
-      border: 2px solid #1ed760;
+      border: 2px solid #5e82ad;
       border-radius: 50%;
       background: white;
       transition: background 0.3s ease-in-out;
@@ -154,7 +172,7 @@
     &::-moz-range-thumb {
       height: 0.6rem;
       width: 0.6rem;
-      border: 2px solid #1ed760;
+      border: 2px solid #5e82ad;
       border-radius: 50%;
       background: white;
       transition: background 0.3s ease-in-out;
@@ -165,7 +183,7 @@
     &::-ms-thumb {
       height: 0.9rem;
       width: 0.9rem;
-      border: 2px solid #1ed760;
+      border: 2px solid #5e82ad;
       border-radius: 50%;
       background: white;
       transition: background 0.3s ease-in-out;

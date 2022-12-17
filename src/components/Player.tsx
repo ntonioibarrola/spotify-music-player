@@ -6,7 +6,6 @@ import useSpotify from '../hooks/useSpotify';
 
 function Player() {
   const { track, isTrackPlaying, setIsTrackPlaying } = useTrackStore();
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [percentage, setPercentage] = useState<number>(50);
   const [savePercentage, setSavePercentage] = useState<number>(percentage);
@@ -19,8 +18,8 @@ function Player() {
       spotifyApi.getMyCurrentPlaybackState().then((data) => {
         if (data.body.is_playing) {
           spotifyApi.pause();
-          setIsTrackPlaying(false);
         }
+        setIsTrackPlaying(false);
       });
     } else {
       setIsTrackPlaying(true);
@@ -53,7 +52,7 @@ function Player() {
       className='flex h-full w-full items-center justify-between rounded-b-lg border-t-4 border-solid
       border-t-white px-10 text-charcoal'
     >
-      <div className='flex items-center gap-x-5'>
+      <div className='flex w-[40%] items-center gap-x-5'>
         <Image
           className={`${
             isTrackPlaying ? 'animate-spin-slow-running' : 'animate-spin-slow-paused'
@@ -64,16 +63,16 @@ function Player() {
           draggable={false}
           alt={`${track?.album.name} Album Cover`}
         />
-        <div className='leading-6'>
-          <p className='cursor-pointer font-semibold hover:underline'>
+        <div className='overflow-hidden whitespace-nowrap leading-6'>
+          <p className='cursor-pointer overflow-hidden text-ellipsis font-semibold hover:underline'>
             {track ? track.name : 'No Track Playing'}
           </p>
-          <p className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
+          <p className='cursor-pointer overflow-hidden text-ellipsis text-[0.95rem] text-zinc-500 hover:underline'>
             {track ? getSongArtists(track.artists) : 'No Artist(s)'}
           </p>
         </div>
       </div>
-      <div className='flex flex-col items-center gap-y-2'>
+      <div className='mx-10 flex w-[20%] flex-col items-center gap-y-2'>
         <div className='space-x-2 text-sm text-zinc-500'>
           <span>{track ? '0:00' : '--:--'}</span>
           <span className='text-spotify-100'>/</span>
@@ -133,7 +132,7 @@ function Player() {
           />
         </div>
       </div>
-      <div className='h-auto w-64'>
+      <div className='flex h-auto w-[40%] justify-end'>
         <div className='flex items-center gap-x-5'>
           <div onClick={handleSpeakerClick}>
             <Image

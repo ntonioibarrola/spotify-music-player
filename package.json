@@ -10,6 +10,9 @@
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.7",
+    "@headlessui/tailwindcss": "^0.1.2",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/spotify-api": "^0.0.19",
     "@types/spotify-web-api-node": "^5.0.7",
     "next": "13.0.2",

@@ -12,7 +12,8 @@ import useSpotify from '../hooks/useSpotify';
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  const { playlistId, getPlaylists, getPlaylist, setPlaylists, setPlaylist } = usePlaylistStore();
+  const { playlistId, getPlaylists, getPlaylist, setPlaylists, setPlaylist, setPlaylistId } =
+    usePlaylistStore();
   const spotifyApi = useSpotify();
 
   const fetchPlaylists = useCallback(async () => {
@@ -20,10 +21,11 @@ const Home: NextPage = () => {
     setPlaylists(playlists);
   }, []);
 
-  const fetchPlaylist = useCallback(async () => {
+  const fetchPlaylist = async () => {
     const playlist = await getPlaylist(spotifyApi, playlistId);
     setPlaylist(playlist);
-  }, []);
+    setPlaylistId(playlistId);
+  };
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
@@ -51,8 +53,8 @@ const Home: NextPage = () => {
       </main> */}
       <main className='grid h-screen grid-cols-[1fr_minmax(950px,_1500px)_1fr] bg-spotify-100'>
         <div className='col-start-2 col-end-3 flex flex-col justify-center overflow-y-hidden px-10'>
-          <div className='grid h-[85%] grid-cols-[1fr_32rem_1fr] grid-rows-[1fr_8rem] rounded-lg bg-offwhite'>
-            <div className='col-start-1 col-end-4 row-start-1 row-end-2 overflow-y-scroll py-10'>
+          <div className='grid h-[85%] grid-cols-[1fr_32rem_1fr] grid-rows-[1fr_8rem] overflow-x-hidden rounded-lg bg-offwhite'>
+            <div className='col-start-1 col-end-4 row-start-1 row-end-2 overflow-x-hidden overflow-y-scroll py-10'>
               <Playlist />
             </div>
             <div className='col-start-1 col-end-4 row-start-2 row-end-3'>

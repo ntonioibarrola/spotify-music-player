@@ -6,7 +6,6 @@ import useSpotify from '../hooks/useSpotify';
 
 export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track, index }) => {
   const {
-    trackId,
     previewTrackId,
     isTrackPlaying,
     audio,
@@ -23,6 +22,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
   const spotifyApi = useSpotify();
 
   const playTrack = () => {
+    stopPreviewTrack();
     setTrack(track);
     setTrackId(track.id);
     setIsTrackPlaying(true);
@@ -32,49 +32,30 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
   };
 
   const playPreviewTrack = () => {
-    if (audio || !track.preview_url) {
+    if (audio || !track.preview_url || isTrackPlaying) {
       return;
     }
 
-    // if (!track.preview_url) {
-    //   const newAudio = new Audio(track.external_urls.spotify);
-    //   newAudio.volume = 0.2;
-
-    //   newAudio
-    //   .play()
-    //   .then()
-    //   .catch((error) => {});
-
-    //   const timer = setInterval(() => {
-    //     if (newAudio.volume < 0.2) {
-    //       newAudio.volume = Number((newAudio.volume + 0.05).toFixed(2));
-    //     } else if (fadeIn) {
-    //       clearInterval(fadeIn);
-    //     }
-    //   }, 100);
-
-    //   const timeout = setTimeout(() => {
-
-    //   }, 30000)
-
-    //   return;
-    // }
-
     const newAudio = new Audio(track.preview_url);
-    newAudio.volume = 0.2;
+    newAudio.volume = 0;
 
     newAudio
       .play()
       .then()
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+        console.log(
+          'Please connect with Spotify by interacting with the desktop application (e.g. click a button).',
+        );
+      });
 
     const timer = setInterval(() => {
-      if (newAudio.volume < 0.2) {
+      if (newAudio.volume < 0.1) {
         newAudio.volume = Number((newAudio.volume + 0.05).toFixed(2));
       } else if (fadeIn) {
         clearInterval(fadeIn);
       }
-    }, 100);
+    }, 200);
 
     setFadeIn(timer);
     setAudio(newAudio);
@@ -82,7 +63,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
   };
 
   const stopPreviewTrack = () => {
-    if (!audio) {
+    if (!audio || isTrackPlaying) {
       return;
     }
 
@@ -98,7 +79,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
       } else if (fadeOut) {
         clearInterval(fadeOut);
       }
-    }, 100);
+    }, 200);
 
     setTimeout(() => {
       audio.pause();
@@ -112,7 +93,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
   return (
     <tr
       className={`${
-        audio && track.id === previewTrackId
+        audio && track.id === previewTrackId && !isTrackPlaying
           ? 'before:w-full before:transition-all before:duration-[30s] before:ease-linear'
           : 'before:w-0'
       } relative flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 before:absolute before:left-0
@@ -123,8 +104,8 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
       onFocus={playPreviewTrack}
       onBlur={stopPreviewTrack}
     >
-      <td className='relative text-[0.95rem] text-zinc-500'>{index + 1}</td>
-      <td className='before:content-[" "] relative flex w-[90%] items-center before:invisible'>
+      <td className='relative w-[5%] text-[0.95rem] text-zinc-500'>{index + 1}</td>
+      <td className='before:content-[" "] relative flex w-[85%] items-center before:invisible'>
         <Image
           className='h-[50px] w-[50px] rounded-lg'
           src={track.album.images[0]?.url as string}
@@ -133,7 +114,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
           alt={`${track.album?.name} Album Cover`}
         />
         <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
-          <span className='text-[1rem]'>{track?.name}</span>
+          <span className='text-base'>{track?.name}</span>
           <br />
           <span className='cursor-pointer text-[0.95rem] text-zinc-500 hover:underline'>
             {getSongArtists(track?.artists)}
