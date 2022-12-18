@@ -16,6 +16,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
     setTrackId,
     setPreviewTrackId,
     setIsTrackPlaying,
+    setTrackProgress,
     setAudio,
     setFadeIn,
     setFadeOut,
@@ -32,13 +33,15 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
         setTrack(track);
         setTrackId(track.id);
         setIsTrackPlaying(true);
+        setTrackProgress(0);
       })
       .catch((error) => {
         console.log(error);
         setMessage({
           type: 'warning',
           title: 'Warning!',
-          description: `Please connect with Spotify by interacting with Spotify's desktop or browser application (e.g. click the play button).`,
+          description: `No active device found. Please have a Spotify app (desktop or browser) running in the background, 
+            and interact with it at least once (e.g. click the play button).`,
           // description: `An active Spotify device is required to play songs. Please have Spotify's desktop or browser application in the background and interact with the device at least once (e.g. click the play button).`,
           url: 'https://open.spotify.com/',
           button: 'Got it, thanks!',

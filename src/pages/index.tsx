@@ -13,8 +13,7 @@ import useSpotify from '../hooks/useSpotify';
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  const { playlistId, getPlaylists, getPlaylist, setPlaylists, setPlaylist, setPlaylistId } =
-    usePlaylistStore();
+  const { getPlaylists, setPlaylists } = usePlaylistStore();
   const spotifyApi = useSpotify();
 
   const fetchPlaylists = useCallback(async () => {
@@ -22,16 +21,9 @@ const Home: NextPage = () => {
     setPlaylists(playlists);
   }, []);
 
-  const fetchPlaylist = async () => {
-    const playlist = await getPlaylist(spotifyApi, playlistId);
-    setPlaylist(playlist);
-    setPlaylistId(playlistId);
-  };
-
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       fetchPlaylists();
-      fetchPlaylist();
     }
   }, [session, spotifyApi]);
 

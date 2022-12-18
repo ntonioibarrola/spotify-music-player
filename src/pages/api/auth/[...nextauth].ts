@@ -79,6 +79,7 @@ export const authOptions: NextAuthOptions = {
         url: 'https://accounts.spotify.com/authorize',
         params: {
           scope: scopes,
+          show_dialog: true,
         },
       },
     }),

@@ -1,10 +1,12 @@
-import { signOut } from 'next-auth/react';
+import { useEffect } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
 import { getPlaylistDuration } from '../utils/helper';
 import { SpotifyTrack } from '../types/spotify';
 import Image from 'next/image';
 import Track from './Track';
 import Dropdown from './Dropdown';
+import useSpotify from '../hooks/useSpotify';
 
 interface DummyData {
   albumCover: string;
@@ -163,7 +165,21 @@ const dummyData: Array<DummyData> = [
 ];
 
 function Playlist() {
-  const { playlist } = usePlaylistStore();
+  const { data: session } = useSession();
+  const { playlists, playlist, getPlaylist, setPlaylist, setPlaylistId } = usePlaylistStore();
+  const spotifyApi = useSpotify();
+
+  const fetchPlaylist = async () => {
+    const playlist = await getPlaylist(spotifyApi, playlists[0]?.id as string);
+    setPlaylist(playlist);
+    setPlaylistId(playlists[0]?.id as string);
+  };
+
+  useEffect(() => {
+    if (spotifyApi.getAccessToken() && playlists[0]) {
+      fetchPlaylist();
+    }
+  }, [session, spotifyApi, playlists]);
 
   return (
     <div className='relative mx-auto h-auto w-[42rem] space-y-8'>

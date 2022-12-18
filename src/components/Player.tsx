@@ -1,11 +1,23 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
 import { getSongArtists, getSongDuration } from '../utils/helper';
+import { SpotifyTrack } from '../types/spotify';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 
 function Player() {
-  const { track, isTrackPlaying, setTrack, setIsTrackPlaying } = useTrackStore();
+  const { data: session } = useSession();
+  const {
+    track,
+    trackId,
+    isTrackPlaying,
+    trackProgress,
+    setTrack,
+    setTrackId,
+    setIsTrackPlaying,
+    setTrackProgress,
+  } = useTrackStore();
   const { setMessage, setIsMessageOpen } = useMessageStore();
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [percentage, setPercentage] = useState<number>(50);
@@ -14,33 +26,69 @@ function Player() {
 
   const rangeRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (spotifyApi.getAccessToken() && !trackId) {
+      fetchTrack();
+    }
+  }, [trackId, spotifyApi, session]);
+
+  const fetchTrack = useCallback(async () => {
+    if (track) return;
+
+    spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+      setTrack(data.body?.item as SpotifyTrack);
+      setTrackId(data.body?.item?.id as string);
+      setTrackProgress(data.body?.progress_ms as number);
+    });
+
+    spotifyApi.getMyCurrentPlaybackState().then((data) => {
+      setIsTrackPlaying(data.body?.is_playing);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!spotifyApi.getAccessToken() || !isTrackPlaying) return;
+
+    const interval = setInterval(() => {
+      fetchTrackProgress();
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+
+  const fetchTrackProgress = async () => {
+    if (!isTrackPlaying) return;
+
+    spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+      setTrackProgress(data.body?.progress_ms as number);
+    });
+  };
+
   const handlePlayClick = () => {
     if (!track) return;
 
     if (isTrackPlaying) {
-      spotifyApi.getMyCurrentPlaybackState().then((data) => {
-        if (data.body && data.body.is_playing) {
-          spotifyApi.pause();
-        } else {
-          setTrack(null);
-        }
-      });
+      spotifyApi.pause();
       setIsTrackPlaying(false);
     } else {
       spotifyApi
         .play()
-        .then(() => setIsTrackPlaying(true))
+        .then()
         .catch((error) => {
           console.log(error);
           setMessage({
             type: 'warning',
             title: 'Warning!',
-            description: `Please connect with Spotify by interacting with Spotify's desktop or browser application (e.g. click the play button).`,
+            description: `No active device found. Please have a Spotify app (desktop or browser) running in the background, 
+              and interact with it at least once (e.g. click the play button).`,
             url: 'https://open.spotify.com/',
             button: 'Got it, thanks!',
           });
           setIsMessageOpen(true);
         });
+      setIsTrackPlaying(true);
     }
   };
 
@@ -91,7 +139,13 @@ function Player() {
       </div>
       <div className='mx-10 flex w-[20%] flex-col items-center gap-y-2'>
         <div className='space-x-2 text-sm text-gray-500'>
-          <span>{track ? '0:00' : '--:--'}</span>
+          <span>
+            {trackProgress && track
+              ? getSongDuration(trackProgress)
+              : !trackProgress && track
+              ? '0:00'
+              : '--:--'}
+          </span>
           <span className='text-spotify-100'>/</span>
           <span>{track ? getSongDuration(track.duration_ms) : '--:--'}</span>
         </div>

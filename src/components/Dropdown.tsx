@@ -41,8 +41,8 @@ const Dropdown = () => {
               leaveFrom='opacity-100 translate-y-0'
               leaveTo='opacity-0 translate-y-1'
             >
-              <Popover.Panel className='absolute -left-[52px] z-10 mt-3 h-96 w-screen max-w-sm -translate-x-1/2 transform px-4'>
-                <div className='h-full w-full overflow-y-scroll rounded-lg shadow-lg shadow-gray-200'>
+              <Popover.Panel className='absolute -left-[52px] z-10 mt-3 max-h-96 w-screen max-w-sm -translate-x-1/2 transform px-4'>
+                <div className='max-h-96 w-full overflow-y-scroll rounded-lg shadow-lg shadow-gray-200'>
                   <div className='relative flex flex-col items-center gap-7 bg-white p-7'>
                     {playlists.map((playlist) => (
                       <div
