@@ -1,10 +1,10 @@
-import { Fragment, useCallback } from 'react';
+import { FC, Fragment, useCallback } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 
-const Dropdown = () => {
+const Dropdown: FC = () => {
   const { playlists, setPlaylist, setPlaylistId, getPlaylist } = usePlaylistStore();
   const spotifyApi = useSpotify();
 

@@ -1,12 +1,17 @@
 import create from 'zustand';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { SpotifyPlaylist, SpotifyPlaylists, SpotifyTrack } from '../types/spotify';
-import { Message } from '../types/message';
+import { Message } from '../types/message-types';
+import {
+  SpotifyPlayingTrack,
+  SpotifyPlaylist,
+  SpotifyPlaylists,
+  SpotifyTrack,
+} from '../types/spotify-types';
 
 interface PlaylistState {
   playlists: SpotifyPlaylists;
   playlist: SpotifyPlaylist | null;
-  playlistId: string | null;
+  playlistId: string | null; // Not used at all
 
   setPlaylists: (playlists: PlaylistState['playlists']) => void;
   setPlaylist: (playlist: PlaylistState['playlist']) => void;
@@ -37,7 +42,6 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
 
   getPlaylist: async (spotifyApi, playlistId) => {
     const playlist = await spotifyApi.getPlaylist(playlistId).then((data) => {
-      set({ playlistId: playlistId });
       return data.body;
     });
     return playlist;
@@ -46,6 +50,8 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
 
 interface TrackState {
   track: SpotifyTrack | null;
+  playingTrack: SpotifyPlayingTrack | null;
+  playbackState: SpotifyApi.CurrentPlaybackResponse | null;
   trackId: string | null;
   previewTrackId: string | null;
   isTrackPlaying: boolean;
@@ -62,10 +68,15 @@ interface TrackState {
   setAudio: (audio: TrackState['audio']) => void;
   setFadeIn: (fadeIn: TrackState['fadeIn']) => void;
   setFadeOut: (fadeOut: TrackState['fadeOut']) => void;
+
+  getPlayingTrack: (spotifyApi: SpotifyWebApi) => Promise<TrackState['playingTrack']>;
+  getPlaybackState: (spotifyApi: SpotifyWebApi) => Promise<TrackState['playbackState']>;
 }
 
 export const useTrackStore = create<TrackState>((set) => ({
   track: null,
+  playingTrack: null,
+  playbackState: null,
   trackId: null,
   previewTrackId: null,
   isTrackPlaying: false,
@@ -82,6 +93,20 @@ export const useTrackStore = create<TrackState>((set) => ({
   setAudio: (audio) => set({ audio }),
   setFadeIn: (fadeIn) => set({ fadeIn }),
   setFadeOut: (fadeOut) => set({ fadeOut }),
+
+  getPlayingTrack: async (spotifyApi) => {
+    const playingTrack = await spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+      return data.body;
+    });
+    return playingTrack;
+  },
+
+  getPlaybackState: async (spotifyApi) => {
+    const playbackState = spotifyApi.getMyCurrentPlaybackState().then((data) => {
+      return data.body;
+    });
+    return playbackState;
+  },
 }));
 
 interface MessageState {

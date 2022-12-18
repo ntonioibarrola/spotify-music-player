@@ -1,8 +1,9 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
-import { getSongArtists, getSongDuration } from '../utils/helper';
-import { SpotifyTrack } from '../types/spotify';
+import { Message } from '../types/message-types';
+import { SpotifyTrack } from '../types/spotify-types';
+import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 
@@ -17,6 +18,8 @@ function Player() {
     setTrackId,
     setIsTrackPlaying,
     setTrackProgress,
+    getPlayingTrack,
+    getPlaybackState,
   } = useTrackStore();
   const { setMessage, setIsMessageOpen } = useMessageStore();
   const [isMuted, setIsMuted] = useState<boolean>(false);
@@ -27,31 +30,25 @@ function Player() {
   const rangeRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (spotifyApi.getAccessToken() && !trackId) {
-      fetchTrack();
-    }
-  }, [trackId, spotifyApi, session]);
+    if (!spotifyApi.getAccessToken() || trackId) return;
 
-  const fetchTrack = useCallback(async () => {
-    if (track) return;
+    fetchTrackInfo();
+  }, [session, spotifyApi, trackId]);
 
-    spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-      setTrack(data.body?.item as SpotifyTrack);
-      setTrackId(data.body?.item?.id as string);
-      setTrackProgress(data.body?.progress_ms as number);
-    });
-
-    spotifyApi.getMyCurrentPlaybackState().then((data) => {
-      setIsTrackPlaying(data.body?.is_playing);
-    });
-  }, []);
+  const fetchTrackInfo = async () => {
+    const playingTrack = await getPlayingTrack(spotifyApi);
+    setTrack(playingTrack?.item as SpotifyTrack);
+    setTrackId(playingTrack?.item?.id as string);
+    setTrackProgress(playingTrack?.progress_ms as number);
+    setIsTrackPlaying(playingTrack?.is_playing as boolean);
+  };
 
   useEffect(() => {
     if (!spotifyApi.getAccessToken() || !isTrackPlaying) return;
 
     const interval = setInterval(() => {
       fetchTrackProgress();
-    }, 1000);
+    }, 300);
 
     return () => {
       clearInterval(interval);
@@ -59,18 +56,32 @@ function Player() {
   });
 
   const fetchTrackProgress = async () => {
-    if (!isTrackPlaying) return;
-
-    spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-      setTrackProgress(data.body?.progress_ms as number);
-    });
+    const playbackState = await getPlaybackState(spotifyApi);
+    setTrackProgress((playbackState?.progress_ms as number) + 300);
+    setIsTrackPlaying(playbackState?.is_playing as boolean);
   };
 
   const handlePlayClick = () => {
     if (!track) return;
 
+    const message: Message = {
+      type: 'warning',
+      title: 'Warning!',
+      description: `No active device found. Please have a Spotify app (desktop or browser) running 
+        in the background, and interact with it at least once (e.g. click the play button).`,
+      url: 'https://open.spotify.com/',
+      button: 'Got it, thanks!',
+    };
+
     if (isTrackPlaying) {
-      spotifyApi.pause();
+      spotifyApi
+        .pause()
+        .then()
+        .catch((error) => {
+          console.log(error);
+          setMessage(message);
+          setIsMessageOpen(true);
+        });
       setIsTrackPlaying(false);
     } else {
       spotifyApi
@@ -78,14 +89,7 @@ function Player() {
         .then()
         .catch((error) => {
           console.log(error);
-          setMessage({
-            type: 'warning',
-            title: 'Warning!',
-            description: `No active device found. Please have a Spotify app (desktop or browser) running in the background, 
-              and interact with it at least once (e.g. click the play button).`,
-            url: 'https://open.spotify.com/',
-            button: 'Got it, thanks!',
-          });
+          setMessage(message);
           setIsMessageOpen(true);
         });
       setIsTrackPlaying(true);
@@ -93,7 +97,7 @@ function Player() {
   };
 
   const handleSpeakerClick = () => {
-    if (!(rangeRef.current && rangeRef.current.value)) return;
+    if (!rangeRef.current || !rangeRef.current.value) return;
 
     if (rangeRef.current.value === '0' && isMuted) {
       rangeRef.current.value = String(savePercentage);

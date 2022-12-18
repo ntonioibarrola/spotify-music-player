@@ -1,168 +1,12 @@
 import { useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
-import { getPlaylistDuration } from '../utils/helper';
-import { SpotifyTrack } from '../types/spotify';
+import { SpotifyTrack } from '../types/spotify-types';
+import { getPlaylistDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 import Track from './Track';
 import Dropdown from './Dropdown';
 import useSpotify from '../hooks/useSpotify';
-
-interface DummyData {
-  albumCover: string;
-  songTitle: string;
-  artistName: string;
-  albumTitle: string;
-  dateAdded: string;
-  songLength: string;
-}
-
-const dummyData: Array<DummyData> = [
-  {
-    albumCover: '/dummy-nurture.png',
-    songTitle: 'Something Comforting',
-    artistName: 'Porter Robinson',
-    albumTitle: 'Nurture',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '4:41',
-  },
-  {
-    albumCover: '/dummy-persona.png',
-    songTitle: 'Mikrokosmos',
-    artistName: 'BTS',
-    albumTitle: 'MAP OF THE SOUL: PERSONA',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:44',
-  },
-  {
-    albumCover: '/dummy-whocares.png',
-    songTitle: 'AMAZING',
-    artistName: 'Rex Orange County',
-    albumTitle: 'WHO CARES?',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:29',
-  },
-  {
-    albumCover: '/dummy-nurture.png',
-    songTitle: 'Something Comforting',
-    artistName: 'Porter Robinson',
-    albumTitle: 'Nurture',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '4:41',
-  },
-  {
-    albumCover: '/dummy-persona.png',
-    songTitle: 'Mikrokosmos',
-    artistName: 'BTS',
-    albumTitle: 'MAP OF THE SOUL: PERSONA',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:44',
-  },
-  {
-    albumCover: '/dummy-whocares.png',
-    songTitle: 'AMAZING',
-    artistName: 'Rex Orange County',
-    albumTitle: 'WHO CARES?',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:29',
-  },
-  {
-    albumCover: '/dummy-nurture.png',
-    songTitle: 'Something Comforting',
-    artistName: 'Porter Robinson',
-    albumTitle: 'Nurture',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '4:41',
-  },
-  {
-    albumCover: '/dummy-persona.png',
-    songTitle: 'Mikrokosmos',
-    artistName: 'BTS',
-    albumTitle: 'MAP OF THE SOUL: PERSONA',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:44',
-  },
-  {
-    albumCover: '/dummy-whocares.png',
-    songTitle: 'AMAZING',
-    artistName: 'Rex Orange County',
-    albumTitle: 'WHO CARES?',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:29',
-  },
-  {
-    albumCover: '/dummy-nurture.png',
-    songTitle: 'Something Comforting',
-    artistName: 'Porter Robinson',
-    albumTitle: 'Nurture',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '4:41',
-  },
-  {
-    albumCover: '/dummy-persona.png',
-    songTitle: 'Mikrokosmos',
-    artistName: 'BTS',
-    albumTitle: 'MAP OF THE SOUL: PERSONA',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:44',
-  },
-  {
-    albumCover: '/dummy-whocares.png',
-    songTitle: 'AMAZING',
-    artistName: 'Rex Orange County',
-    albumTitle: 'WHO CARES?',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:29',
-  },
-  {
-    albumCover: '/dummy-nurture.png',
-    songTitle: 'Something Comforting',
-    artistName: 'Porter Robinson',
-    albumTitle: 'Nurture',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '4:41',
-  },
-  {
-    albumCover: '/dummy-persona.png',
-    songTitle: 'Mikrokosmos',
-    artistName: 'BTS',
-    albumTitle: 'MAP OF THE SOUL: PERSONA',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:44',
-  },
-  {
-    albumCover: '/dummy-whocares.png',
-    songTitle: 'AMAZING',
-    artistName: 'Rex Orange County',
-    albumTitle: 'WHO CARES?',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:29',
-  },
-  {
-    albumCover: '/dummy-nurture.png',
-    songTitle: 'Something Comforting',
-    artistName: 'Porter Robinson',
-    albumTitle: 'Nurture',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '4:41',
-  },
-  {
-    albumCover: '/dummy-persona.png',
-    songTitle: 'Mikrokosmos',
-    artistName: 'BTS',
-    albumTitle: 'MAP OF THE SOUL: PERSONA',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:44',
-  },
-  {
-    albumCover: '/dummy-whocares.png',
-    songTitle: 'AMAZING',
-    artistName: 'Rex Orange County',
-    albumTitle: 'WHO CARES?',
-    dateAdded: 'Dec 10, 2022',
-    songLength: '3:29',
-  },
-];
 
 function Playlist() {
   const { data: session } = useSession();
@@ -176,9 +20,9 @@ function Playlist() {
   };
 
   useEffect(() => {
-    if (spotifyApi.getAccessToken() && playlists[0]) {
-      fetchPlaylist();
-    }
+    if (!spotifyApi.getAccessToken() || !playlists[0]) return;
+
+    fetchPlaylist();
   }, [session, spotifyApi, playlists]);
 
   return (

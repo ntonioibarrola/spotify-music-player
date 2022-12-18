@@ -1,9 +1,9 @@
+import { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
 import { useMessageStore } from '../contexts/spotify-contexts';
 import Image from 'next/image';
 
-export const Error = () => {
+const Message: FC = () => {
   const { message, isMessageOpen, setIsMessageOpen } = useMessageStore();
 
   return (
@@ -99,4 +99,4 @@ export const Error = () => {
   );
 };
 
-export default Error;
+export default Message;

@@ -5,7 +5,7 @@ import {
   getSongArtists,
   getSongDuration,
   getAddedByDate,
-} from '../utils/helper';
+} from '../utils/helper-utils';
 import Image from 'next/image';
 
 interface DummyData {

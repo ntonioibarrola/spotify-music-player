@@ -22,9 +22,9 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      fetchPlaylists();
-    }
+    if (!spotifyApi.getAccessToken()) return;
+
+    fetchPlaylists();
   }, [session, spotifyApi]);
 
   return (

@@ -1,6 +1,6 @@
-import { getSongArtists, getSongDuration } from '../utils/helper';
 import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
-import { SpotifyTrack } from '../types/spotify';
+import { SpotifyTrack } from '../types/spotify-types';
+import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 
@@ -40,9 +40,8 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
         setMessage({
           type: 'warning',
           title: 'Warning!',
-          description: `No active device found. Please have a Spotify app (desktop or browser) running in the background, 
-            and interact with it at least once (e.g. click the play button).`,
-          // description: `An active Spotify device is required to play songs. Please have Spotify's desktop or browser application in the background and interact with the device at least once (e.g. click the play button).`,
+          description: `No active device found. Please have a Spotify app (desktop or browser) running 
+            in the background, and interact with it at least once (e.g. click the play button).`,
           url: 'https://open.spotify.com/',
           button: 'Got it, thanks!',
         });
@@ -51,9 +50,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
   };
 
   const playPreviewTrack = () => {
-    if (audio || !track.preview_url || isTrackPlaying) {
-      return;
-    }
+    if (audio || !track.preview_url || isTrackPlaying) return;
 
     const newAudio = new Audio(track.preview_url);
     newAudio.volume = 0;
@@ -77,9 +74,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
   };
 
   const stopPreviewTrack = () => {
-    if (!audio || isTrackPlaying) {
-      return;
-    }
+    if (!audio) return;
 
     const originalVolume = audio.volume;
 
