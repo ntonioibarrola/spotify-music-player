@@ -109,7 +109,9 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
         audio && track.id === previewTrackId && !isTrackPlaying
           ? 'before:w-full before:transition-all before:duration-[30s] before:ease-linear'
           : 'before:w-0'
-      } relative flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 before:absolute before:left-0
+      } ${
+        previewTrackId && track.id !== previewTrackId ? 'opacity-40' : 'opacity-100'
+      } relative flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 transition-opacity before:absolute before:left-0
       before:h-full before:rounded-md before:bg-gray-300 hover:bg-gray-200`}
       onClick={playTrack}
       onMouseOver={playPreviewTrack}
