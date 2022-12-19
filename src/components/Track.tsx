@@ -66,7 +66,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
 
     const timer = setInterval(() => {
       if (newAudio.volume < 0.1) {
-        newAudio.volume = Number((newAudio.volume + 0.05).toFixed(2));
+        newAudio.volume = Number((newAudio.volume + 0.01).toFixed(2));
       } else if (fadeIn) {
         clearInterval(fadeIn);
       }
@@ -88,15 +88,15 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
 
     const timer = setInterval(() => {
       if (audio.volume > 0) {
-        audio.volume = Number((audio.volume - 0.05).toFixed(2));
+        audio.volume = Number((audio.volume - 0.01).toFixed(2));
       } else if (fadeOut) {
         clearInterval(fadeOut);
       }
-    }, 200);
+    }, 100);
 
     setTimeout(() => {
       audio.pause();
-    }, (originalVolume / 0.05) * 100);
+    }, (originalVolume / 0.01) * 100);
 
     setFadeOut(timer);
     setAudio(null);
