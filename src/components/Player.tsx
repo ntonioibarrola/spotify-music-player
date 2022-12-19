@@ -1,10 +1,11 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
 import { Message } from '../types/message-types';
 import { SpotifyTrack } from '../types/spotify-types';
 import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
+import debounce from 'lodash.debounce';
 import useSpotify from '../hooks/useSpotify';
 
 function Player() {
@@ -22,8 +23,8 @@ function Player() {
   } = useTrackStore();
   const { setMessage, setIsMessageOpen } = useMessageStore();
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [percentage, setPercentage] = useState<number>(50);
-  const [savePercentage, setSavePercentage] = useState<number>(percentage);
+  const [volume, setVolume] = useState<number>(50);
+  const [saveVolume, setSaveVolume] = useState<number>(volume);
   const spotifyApi = useSpotify();
 
   const rangeRef = useRef<HTMLInputElement>(null);
@@ -43,10 +44,18 @@ function Player() {
     setTrackProgress(playbackState?.progress_ms as number);
   };
 
+  const debouncedVolume = useCallback(
+    debounce((volume) => {
+      spotifyApi.setVolume(volume);
+    }, 500),
+    [],
+  );
+
   useEffect(() => {
     if (!spotifyApi.getAccessToken() || trackId) return;
 
     fetchTrackInfo();
+    debouncedVolume(volume);
   }, [session, spotifyApi]);
 
   useEffect(() => {
@@ -60,6 +69,14 @@ function Player() {
       clearInterval(interval);
     };
   });
+
+  useEffect(() => {
+    if (!spotifyApi.getAccessToken() || !trackId) return;
+
+    if (volume > 0 && volume < 100) {
+      debouncedVolume(volume);
+    }
+  }, [volume]);
 
   const message: Message = {
     type: 'warning',
@@ -98,12 +115,13 @@ function Player() {
     if (!rangeRef.current || !rangeRef.current.value) return;
 
     if (rangeRef.current.value === '0' && isMuted) {
-      rangeRef.current.value = String(savePercentage);
-      setPercentage(savePercentage);
+      rangeRef.current.value = String(saveVolume);
+      setVolume(saveVolume);
     } else {
       rangeRef.current.value = '0';
-      setSavePercentage(percentage);
-      setPercentage(0);
+      spotifyApi.setVolume(0);
+      setSaveVolume(volume);
+      setVolume(0);
     }
 
     setIsMuted(!isMuted);
@@ -121,7 +139,7 @@ function Player() {
 
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (isMuted) setIsMuted(false);
-    setPercentage(Number(event.target.value));
+    setVolume(Number(event.target.value));
   };
 
   return (
@@ -247,10 +265,10 @@ function Player() {
               />
             </div>
             <input
-              style={{ backgroundSize: ((percentage - 0) * 100) / (100 - 0) + '% 100%' }}
+              style={{ backgroundSize: ((volume - 0) * 100) / (100 - 0) + '% 100%' }}
               className='cursor-pointer'
               type='range'
-              step='0.01'
+              step='10'
               ref={rangeRef}
               onChange={handleVolumeChange}
             />
