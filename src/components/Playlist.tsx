@@ -10,7 +10,8 @@ import useSpotify from '../hooks/useSpotify';
 
 function Playlist() {
   const { data: session } = useSession();
-  const { playlists, playlist, getPlaylist, setPlaylist, setPlaylistId } = usePlaylistStore();
+  const { playlists, playlist, playlistId, getPlaylist, setPlaylist, setPlaylistId } =
+    usePlaylistStore();
   const spotifyApi = useSpotify();
 
   const fetchPlaylist = async () => {
@@ -20,7 +21,7 @@ function Playlist() {
   };
 
   useEffect(() => {
-    if (!spotifyApi.getAccessToken() || !playlists[0]) return;
+    if (!spotifyApi.getAccessToken() || !playlists[0] || playlistId) return;
 
     fetchPlaylist();
   }, [session, spotifyApi, playlists]);

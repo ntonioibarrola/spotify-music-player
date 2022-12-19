@@ -18,7 +18,6 @@ function Player() {
     setTrackId,
     setIsTrackPlaying,
     setTrackProgress,
-    getPlayingTrack,
     getPlaybackState,
   } = useTrackStore();
   const { setMessage, setIsMessageOpen } = useMessageStore();
@@ -29,25 +28,32 @@ function Player() {
 
   const rangeRef = useRef<HTMLInputElement>(null);
 
+  const fetchTrackInfo = async () => {
+    const playbackState = await getPlaybackState(spotifyApi);
+    setTrack(playbackState?.item as SpotifyTrack);
+    setTrackId(playbackState?.item?.id as string);
+    setTrackProgress(playbackState?.progress_ms as number);
+    setIsTrackPlaying(playbackState?.is_playing as boolean);
+  };
+
+  const fetchTrackOnPlay = async () => {
+    const playbackState = await getPlaybackState(spotifyApi);
+    setTrack(playbackState?.item as SpotifyTrack);
+    setTrackId(playbackState?.item?.id as string);
+    setTrackProgress(playbackState?.progress_ms as number);
+  };
+
   useEffect(() => {
     if (!spotifyApi.getAccessToken() || trackId) return;
 
     fetchTrackInfo();
-  }, [session, spotifyApi, trackId]);
-
-  const fetchTrackInfo = async () => {
-    const playingTrack = await getPlayingTrack(spotifyApi);
-    setTrack(playingTrack?.item as SpotifyTrack);
-    setTrackId(playingTrack?.item?.id as string);
-    setTrackProgress(playingTrack?.progress_ms as number);
-    setIsTrackPlaying(playingTrack?.is_playing as boolean);
-  };
+  }, [session, spotifyApi]);
 
   useEffect(() => {
     if (!spotifyApi.getAccessToken() || !isTrackPlaying) return;
 
     const interval = setInterval(() => {
-      fetchTrackProgress();
+      fetchTrackOnPlay();
     }, 300);
 
     return () => {
@@ -55,45 +61,37 @@ function Player() {
     };
   });
 
-  const fetchTrackProgress = async () => {
-    const playbackState = await getPlaybackState(spotifyApi);
-    setTrackProgress((playbackState?.progress_ms as number) + 300);
-    setIsTrackPlaying(playbackState?.is_playing as boolean);
+  const message: Message = {
+    type: 'warning',
+    title: 'Warning!',
+    description: `No active device found. Please have a Spotify app (desktop or browser) running
+      in the background, and interact with it at least once (e.g. click the play button).`,
+    url: 'https://open.spotify.com/',
+    button: 'Got it, thanks!',
   };
 
-  const handlePlayClick = () => {
-    if (!track) return;
+  const handlePlayClick = async () => {
+    await spotifyApi
+      .pause()
+      .then()
+      .catch((error) => {
+        console.log(error);
+        setMessage(message);
+        setIsMessageOpen(true);
+      });
+    setIsTrackPlaying(false);
+  };
 
-    const message: Message = {
-      type: 'warning',
-      title: 'Warning!',
-      description: `No active device found. Please have a Spotify app (desktop or browser) running 
-        in the background, and interact with it at least once (e.g. click the play button).`,
-      url: 'https://open.spotify.com/',
-      button: 'Got it, thanks!',
-    };
-
-    if (isTrackPlaying) {
-      spotifyApi
-        .pause()
-        .then()
-        .catch((error) => {
-          console.log(error);
-          setMessage(message);
-          setIsMessageOpen(true);
-        });
-      setIsTrackPlaying(false);
-    } else {
-      spotifyApi
-        .play()
-        .then()
-        .catch((error) => {
-          console.log(error);
-          setMessage(message);
-          setIsMessageOpen(true);
-        });
-      setIsTrackPlaying(true);
-    }
+  const handlePauseClick = async () => {
+    await spotifyApi
+      .play()
+      .then()
+      .catch((error) => {
+        console.log(error);
+        setMessage(message);
+        setIsMessageOpen(true);
+      });
+    setIsTrackPlaying(true);
   };
 
   const handleSpeakerClick = () => {
@@ -109,6 +107,16 @@ function Player() {
     }
 
     setIsMuted(!isMuted);
+  };
+
+  const handlePreviousClick = async () => {
+    await spotifyApi.skipToPrevious();
+    fetchTrackInfo();
+  };
+
+  const handleNextClick = async () => {
+    await spotifyApi.skipToNext();
+    fetchTrackInfo();
   };
 
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -154,39 +162,42 @@ function Player() {
           <span>{track ? getSongDuration(track.duration_ms) : '--:--'}</span>
         </div>
         <div className='flex items-center gap-x-5'>
-          <Image
-            className='cursor-pointer opacity-40 hover:opacity-80'
-            src={'/previous.svg'}
-            width='20'
-            height='20'
-            draggable={false}
-            alt={`Previous Button`}
-          />
-          <div className='flex-shrink-0' onClick={handlePlayClick}>
-            {track ? (
-              <>
+          <div onClick={handlePreviousClick}>
+            <Image
+              className='cursor-pointer opacity-40 hover:opacity-80'
+              src={'/previous.svg'}
+              width='20'
+              height='20'
+              draggable={false}
+              alt={`Previous Button`}
+            />
+          </div>
+          {track ? (
+            <div className='flex-shrink-0'>
+              {isTrackPlaying ? (
                 <Image
-                  className={`${
-                    isTrackPlaying ? 'hidden' : ''
-                  } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
-                  src={'/play.svg'}
-                  width='60'
-                  height='60'
-                  draggable={false}
-                  alt={`Play Button`}
-                />
-                <Image
-                  className={`${
-                    isTrackPlaying ? '' : 'hidden'
-                  } cursor-pointer transition-[none_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]`}
+                  className='block cursor-pointer transition-[scale_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]'
                   src={'/pause.svg'}
                   width='60'
                   height='60'
                   draggable={false}
+                  onClick={handlePlayClick}
                   alt={`Pause Button`}
                 />
-              </>
-            ) : (
+              ) : (
+                <Image
+                  className='block cursor-pointer transition-[scale_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]'
+                  src={'/play.svg'}
+                  width='60'
+                  height='60'
+                  draggable={false}
+                  onClick={handlePauseClick}
+                  alt={`Play Button`}
+                />
+              )}
+            </div>
+          ) : (
+            <div className='flex-shrink-0'>
               <Image
                 className='cursor-not-allowed opacity-50'
                 src={'/play.svg'}
@@ -195,16 +206,18 @@ function Player() {
                 draggable={false}
                 alt={`Disabled Play Button`}
               />
-            )}
+            </div>
+          )}
+          <div onClick={handleNextClick}>
+            <Image
+              className='cursor-pointer opacity-40 hover:opacity-80'
+              src={'/next.svg'}
+              width='20'
+              height='20'
+              draggable={false}
+              alt={`Next Button`}
+            />
           </div>
-          <Image
-            className='cursor-pointer opacity-40 hover:opacity-80'
-            src={'/next.svg'}
-            width='20'
-            height='20'
-            draggable={false}
-            alt={`Next Button`}
-          />
         </div>
       </div>
       <div className='flex h-auto w-[40%] justify-end'>

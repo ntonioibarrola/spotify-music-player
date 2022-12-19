@@ -1,4 +1,4 @@
-import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
+import { useMessageStore, usePlaylistStore, useTrackStore } from '../contexts/spotify-contexts';
 import { SpotifyTrack } from '../types/spotify-types';
 import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
@@ -21,13 +21,17 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
     setFadeIn,
     setFadeOut,
   } = useTrackStore();
+  const { playlist } = usePlaylistStore();
   const spotifyApi = useSpotify();
 
   const playTrack = () => {
     stopPreviewTrack();
     spotifyApi
       .play({
-        uris: [track.uri],
+        context_uri: playlist?.uri,
+        offset: {
+          position: index,
+        },
       })
       .then(() => {
         setTrack(track);

@@ -33,7 +33,10 @@ const Message: FC = () => {
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='flex w-full max-w-md transform flex-col items-center gap-y-2 overflow-hidden rounded-2xl bg-white p-16 text-center align-middle shadow-xl transition-all'>
+                <Dialog.Panel
+                  className='flex w-full max-w-md transform flex-col items-center gap-y-2 overflow-hidden
+                  rounded-2xl bg-white p-16 text-center align-middle shadow-xl transition-all'
+                >
                   <Image
                     className={`h-[50px] w-[50px]`}
                     src={

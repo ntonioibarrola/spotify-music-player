@@ -30,8 +30,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Bounce</title>
-        <link rel='icon' href='/favicon.ico' />
+        <title>Bounce - Themed Spotify</title>
+        <link rel='icon' href='/spotify.svg' />
       </Head>
       {/* <main className='grid h-screen grid-cols-[minmax(300px,_380px)_1fr] grid-rows-[1fr_8rem]'>
         <div className='col-start-1 col-end-2'>
