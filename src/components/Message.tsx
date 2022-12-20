@@ -1,6 +1,6 @@
 import { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { useMessageStore } from '../contexts/spotify-contexts';
+import { useMessageStore } from '../contexts/message-contexts';
 import Image from 'next/image';
 
 const Message: FC = () => {
@@ -35,7 +35,7 @@ const Message: FC = () => {
               >
                 <Dialog.Panel
                   className='flex w-full max-w-md transform flex-col items-center gap-y-2 overflow-hidden
-                  rounded-2xl bg-white p-16 text-center align-middle shadow-xl transition-all'
+                  rounded-2xl bg-white p-8 px-12 text-center align-middle shadow-xl transition-all sm:p-16'
                 >
                   <Image
                     className={`h-[50px] w-[50px]`}
@@ -63,12 +63,14 @@ const Message: FC = () => {
                     {message?.title}
                   </Dialog.Title>
                   <div className='mt-2'>
-                    <p className='text-[0.95rem] text-gray-500'>{message?.description}</p>
+                    <p className='text-sm text-gray-500 sm:text-[0.95rem]'>
+                      {message?.description}
+                    </p>
                   </div>
                   {message?.url && (
                     <div className='mt-2'>
                       <a
-                        className='text-[0.95rem] text-info hover:underline focus:outline-none'
+                        className='text-sm text-info hover:underline focus:outline-none sm:text-[0.95rem]'
                         href={message.url}
                         target='_blank'
                       >
@@ -85,8 +87,8 @@ const Message: FC = () => {
                           : message?.type === 'warning'
                           ? 'bg-warning focus-visible:ring-warning'
                           : 'bg-info focus-visible:ring-info'
-                      } inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-base font-bold text-white
-                      hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`}
+                      } inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-[0.95rem] font-bold text-white hover:opacity-80
+                      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-base`}
                       onClick={() => setIsMessageOpen(false)}
                     >
                       {message?.button}

@@ -1,16 +1,36 @@
 import { FC, Fragment, useCallback } from 'react';
 import { Popover, Transition } from '@headlessui/react';
+import { useMessageStore } from '../contexts/message-contexts';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
+import { SpotifyPlaylist } from '../types/spotify-types';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
+import getMessage from '../utils/message-utils';
 
 const Dropdown: FC = () => {
+  const { setMessage, setIsMessageOpen } = useMessageStore();
   const { playlists, setPlaylist, setPlaylistId, getPlaylist } = usePlaylistStore();
   const spotifyApi = useSpotify();
 
+  const handleError = (error: string) => {
+    let message = null;
+
+    if (error.includes('NO_ACTIVE_DEVICE')) {
+      message = getMessage(error, 'warning');
+    } else {
+      message = getMessage(error, 'error');
+    }
+
+    setMessage(message);
+    setIsMessageOpen(true);
+  };
+
   const fetchPlaylist = useCallback(async (playlistId: string) => {
-    const playlist = await getPlaylist(spotifyApi, playlistId);
-    setPlaylist(playlist);
+    const playlist = await getPlaylist(spotifyApi, playlistId).catch((error) =>
+      handleError(error.message),
+    );
+
+    setPlaylist(playlist as SpotifyPlaylist);
     setPlaylistId(playlistId);
   }, []);
 

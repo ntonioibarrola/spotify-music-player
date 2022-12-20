@@ -1,22 +1,41 @@
 import { useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
+import { useMessageStore } from '../contexts/message-contexts';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
-import { SpotifyTrack } from '../types/spotify-types';
+import { SpotifyPlaylist, SpotifyTrack } from '../types/spotify-types';
 import { getPlaylistDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 import Track from './Track';
 import Dropdown from './Dropdown';
 import useSpotify from '../hooks/useSpotify';
+import getMessage from '../utils/message-utils';
 
 function Playlist() {
   const { data: session } = useSession();
+  const { setMessage, setIsMessageOpen } = useMessageStore();
   const { playlists, playlist, playlistId, getPlaylist, setPlaylist, setPlaylistId } =
     usePlaylistStore();
   const spotifyApi = useSpotify();
 
+  const handleError = (error: string) => {
+    let message = null;
+
+    if (error.includes('NO_ACTIVE_DEVICE')) {
+      message = getMessage(error, 'warning');
+    } else {
+      message = getMessage(error, 'error');
+    }
+
+    setMessage(message);
+    setIsMessageOpen(true);
+  };
+
   const fetchPlaylist = async () => {
-    const playlist = await getPlaylist(spotifyApi, playlists[0]?.id as string);
-    setPlaylist(playlist);
+    const playlist = await getPlaylist(spotifyApi, playlists[0]?.id as string).catch((error) =>
+      handleError(error.message),
+    );
+
+    setPlaylist(playlist as SpotifyPlaylist);
     setPlaylistId(playlists[0]?.id as string);
   };
 

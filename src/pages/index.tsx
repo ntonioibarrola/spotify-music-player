@@ -1,7 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
+import { useMessageStore } from '../contexts/message-contexts';
 import { usePlaylistStore } from '../contexts/spotify-contexts';
+import { SpotifyPlaylists } from '../types/spotify-types';
 import Head from 'next/head';
 import Image from 'next/image';
 import Center from '../components/Center';
@@ -10,15 +12,31 @@ import Message from '../components/Message';
 import Playlist from '../components/Playlist';
 import Player from '../components/Player';
 import useSpotify from '../hooks/useSpotify';
+import getMessage from '../utils/message-utils';
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
+  const { setMessage, setIsMessageOpen } = useMessageStore();
   const { getPlaylists, setPlaylists } = usePlaylistStore();
   const spotifyApi = useSpotify();
 
+  const handleError = (error: string) => {
+    let message = null;
+
+    if (error.includes('NO_ACTIVE_DEVICE')) {
+      message = getMessage(error, 'warning');
+    } else {
+      message = getMessage(error, 'error');
+    }
+
+    setMessage(message);
+    setIsMessageOpen(true);
+  };
+
   const fetchPlaylists = useCallback(async () => {
-    const playlists = await getPlaylists(spotifyApi);
-    setPlaylists(playlists);
+    const playlists = await getPlaylists(spotifyApi).catch((error) => handleError(error.message));
+
+    setPlaylists(playlists as SpotifyPlaylists);
   }, []);
 
   useEffect(() => {
@@ -26,6 +44,18 @@ const Home: NextPage = () => {
 
     fetchPlaylists();
   }, [session, spotifyApi]);
+
+  useEffect(
+    useCallback(() => {
+      const description = `Welcome! To get started, please have a Spotify app (desktop or browser) running 
+        in the background, and interact with it at least once (e.g. click the play button).`;
+      const message = getMessage(description, 'info');
+
+      setMessage(message);
+      setIsMessageOpen(true);
+    }, []),
+    [],
+  );
 
   return (
     <>

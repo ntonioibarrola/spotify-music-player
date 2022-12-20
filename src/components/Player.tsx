@@ -1,12 +1,13 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useMessageStore, useTrackStore } from '../contexts/spotify-contexts';
-import { Message } from '../types/message-types';
+import { useMessageStore } from '../contexts/message-contexts';
+import { useTrackStore } from '../contexts/spotify-contexts';
 import { SpotifyTrack } from '../types/spotify-types';
 import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 import debounce from 'lodash.debounce';
 import useSpotify from '../hooks/useSpotify';
+import getMessage from '../utils/message-utils';
 
 function Player() {
   const { data: session } = useSession();
@@ -29,8 +30,23 @@ function Player() {
 
   const rangeRef = useRef<HTMLInputElement>(null);
 
+  const handleError = (error: string) => {
+    let message = null;
+
+    if (error.includes('NO_ACTIVE_DEVICE')) {
+      message = getMessage(error, 'warning');
+    } else {
+      message = getMessage(error, 'error');
+    }
+
+    setMessage(message);
+    setIsMessageOpen(true);
+  };
+
   const fetchTrackInfo = async () => {
-    const playbackState = await getPlaybackState(spotifyApi);
+    const playbackState = await getPlaybackState(spotifyApi).catch((error) =>
+      handleError(error.message),
+    );
     setTrack(playbackState?.item as SpotifyTrack);
     setTrackId(playbackState?.item?.id as string);
     setTrackProgress(playbackState?.progress_ms as number);
@@ -38,7 +54,9 @@ function Player() {
   };
 
   const fetchTrackOnPlay = async () => {
-    const playbackState = await getPlaybackState(spotifyApi);
+    const playbackState = await getPlaybackState(spotifyApi).catch((error) =>
+      handleError(error.message),
+    );
     setTrack(playbackState?.item as SpotifyTrack);
     setTrackId(playbackState?.item?.id as string);
     setTrackProgress(playbackState?.progress_ms as number);
@@ -46,7 +64,10 @@ function Player() {
 
   const debouncedVolume = useCallback(
     debounce((volume) => {
-      spotifyApi.setVolume(volume);
+      spotifyApi
+        .setVolume(volume)
+        .then()
+        .catch((error) => {});
     }, 500),
     [],
   );
@@ -78,24 +99,11 @@ function Player() {
     }
   }, [volume]);
 
-  const message: Message = {
-    type: 'warning',
-    title: 'Warning!',
-    description: `No active device found. Please have a Spotify app (desktop or browser) running
-      in the background, and interact with it at least once (e.g. click the play button).`,
-    url: 'https://open.spotify.com/',
-    button: 'Got it, thanks!',
-  };
-
   const handlePlayClick = async () => {
     await spotifyApi
       .pause()
       .then()
-      .catch((error) => {
-        console.log(error);
-        setMessage(message);
-        setIsMessageOpen(true);
-      });
+      .catch((error) => handleError(error.message));
     setIsTrackPlaying(false);
   };
 
@@ -103,11 +111,7 @@ function Player() {
     await spotifyApi
       .play()
       .then()
-      .catch((error) => {
-        console.log(error);
-        setMessage(message);
-        setIsMessageOpen(true);
-      });
+      .catch((error) => handleError(error.message));
     setIsTrackPlaying(true);
   };
 
@@ -128,12 +132,18 @@ function Player() {
   };
 
   const handlePreviousClick = async () => {
-    await spotifyApi.skipToPrevious();
+    await spotifyApi
+      .skipToPrevious()
+      .then()
+      .catch((error) => handleError(error.message));
     fetchTrackInfo();
   };
 
   const handleNextClick = async () => {
-    await spotifyApi.skipToNext();
+    await spotifyApi
+      .skipToNext()
+      .then()
+      .catch((error) => handleError(error.message));
     fetchTrackInfo();
   };
 

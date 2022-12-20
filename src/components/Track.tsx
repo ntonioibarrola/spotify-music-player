@@ -1,11 +1,12 @@
-import { useMessageStore, usePlaylistStore, useTrackStore } from '../contexts/spotify-contexts';
+import { useMessageStore } from '../contexts/message-contexts';
+import { usePlaylistStore, useTrackStore } from '../contexts/spotify-contexts';
 import { SpotifyTrack } from '../types/spotify-types';
 import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
+import getMessage from '../utils/message-utils';
 
 export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track, index }) => {
-  const { setMessage, setIsMessageOpen } = useMessageStore();
   const {
     previewTrackId,
     isTrackPlaying,
@@ -21,8 +22,22 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
     setFadeIn,
     setFadeOut,
   } = useTrackStore();
+  const { setMessage, setIsMessageOpen } = useMessageStore();
   const { playlist } = usePlaylistStore();
   const spotifyApi = useSpotify();
+
+  const handleError = (error: string) => {
+    let message = null;
+
+    if (error.includes('NO_ACTIVE_DEVICE')) {
+      message = getMessage(error, 'warning');
+    } else {
+      message = getMessage(error, 'error');
+    }
+
+    setMessage(message);
+    setIsMessageOpen(true);
+  };
 
   const playTrack = () => {
     stopPreviewTrack();
@@ -39,18 +54,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
         setIsTrackPlaying(true);
         setTrackProgress(0);
       })
-      .catch((error) => {
-        console.log(error);
-        setMessage({
-          type: 'warning',
-          title: 'Warning!',
-          description: `No active device found. Please have a Spotify app (desktop or browser) running 
-            in the background, and interact with it at least once (e.g. click the play button).`,
-          url: 'https://open.spotify.com/',
-          button: 'Got it, thanks!',
-        });
-        setIsMessageOpen(true);
-      });
+      .catch((error) => handleError(error.message));
   };
 
   const playPreviewTrack = () => {

@@ -26,4 +26,4 @@ interface InfoMessage {
   button: string;
 }
 
-export type Message = ErrorMessage | WarningMessage | InfoMessage;
+export type Message = ErrorMessage | WarningMessage | InfoMessage | null;

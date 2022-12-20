@@ -1,6 +1,5 @@
 import create from 'zustand';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { Message } from '../types/message-types';
 import {
   SpotifyPlaybackState,
   SpotifyPlaylist,
@@ -68,7 +67,7 @@ interface TrackState {
   setFadeIn: (fadeIn: TrackState['fadeIn']) => void;
   setFadeOut: (fadeOut: TrackState['fadeOut']) => void;
 
-  getPlaybackState: (spotifyApi: SpotifyWebApi) => Promise<TrackState['playbackState'] | void>;
+  getPlaybackState: (spotifyApi: SpotifyWebApi) => Promise<TrackState['playbackState']>;
 }
 
 export const useTrackStore = create<TrackState>((set) => ({
@@ -92,29 +91,9 @@ export const useTrackStore = create<TrackState>((set) => ({
   setFadeOut: (fadeOut) => set({ fadeOut }),
 
   getPlaybackState: async (spotifyApi) => {
-    const playbackState = spotifyApi
-      .getMyCurrentPlaybackState()
-      .then((data) => {
-        return data.body;
-      })
-      .then()
-      .catch((error) => console.log(error.message));
+    const playbackState = spotifyApi.getMyCurrentPlaybackState().then((data) => {
+      return data.body;
+    });
     return playbackState;
   },
-}));
-
-interface MessageState {
-  message: Message | null;
-  isMessageOpen: boolean;
-
-  setMessage: (message: MessageState['message']) => void;
-  setIsMessageOpen: (isMessageOpen: MessageState['isMessageOpen']) => void;
-}
-
-export const useMessageStore = create<MessageState>((set) => ({
-  message: null,
-  isMessageOpen: false,
-
-  setMessage: (message) => set({ message }),
-  setIsMessageOpen: (isMessageOpen) => set({ isMessageOpen }),
 }));
