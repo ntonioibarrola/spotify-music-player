@@ -46,39 +46,11 @@ function Playlist() {
   }, [session, spotifyApi, playlists]);
 
   return (
-    <div className='relative mx-auto h-auto w-[42rem] space-y-8'>
-      <div className='flex h-auto w-full pt-8'>
-        <Image
-          className='h-[180px] w-[180px] rounded-lg object-cover'
-          src={
-            playlist && playlist.images[0]
-              ? (playlist.images[0]?.url as string)
-              : '/placeholder-image.jpg'
-          }
-          width='180'
-          height='180'
-          alt='Playlist Cover'
-        />
-        <div className='ml-8 flex w-full flex-col justify-end font-bold text-charcoal'>
-          <div className='w-[calc(672px-(2rem+180px))] text-[0.8rem] font-semibold'>PLAYLIST</div>
-          <div className='my-2 w-[calc(672px-(2rem+180px))] break-words font-poppins text-5xl line-clamp-2'>
-            {playlist?.name}
-          </div>
-          <div className='flex w-[calc(672px-(2rem+180px))] items-center space-x-2 text-sm font-normal'>
-            <span className='cursor-pointer whitespace-nowrap font-semibold hover:underline'>
-              {playlist?.owner.display_name}
-            </span>
-            <span className='space-x-2 text-gray-500'>
-              <span className='font-poppins'>•</span>
-              <span>{playlist && playlist.followers && playlist?.followers.total} likes</span>
-              <span className='font-poppins'>•</span>
-              <span>{playlist?.tracks.total} songs,</span>
-              <span>{playlist && getPlaylistDuration(playlist.tracks.items)}</span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div className='flex justify-end gap-2'>
+    <div className='relative mx-auto flex h-auto min-w-[20rem] max-w-[42rem] flex-col space-y-8'>
+      <div
+        className='order-1 mt-4 flex justify-center gap-2 [@media(min-width:950px)]:order-3 [@media(min-width:950px)]:mt-8 [@media(min-width:950px)]:justify-end
+        [@media(max-width:949px)]:-mb-4 [@media(max-width:949px)]:px-3'
+      >
         <button
           className='rounded-md border-[1px] border-solid border-gray-500 px-5 text-sm font-bold opacity-40 hover:opacity-80'
           onClick={() => signOut()}
@@ -87,11 +59,46 @@ function Playlist() {
         </button>
         <Dropdown />
       </div>
-      <table className='h-auto w-full text-left text-charcoal'>
+      <div className='order-2 flex h-auto w-full flex-col [@media(min-width:950px)]:flex-row [@media(min-width:950px)]:pt-8 [@media(max-width:949px)]:gap-5'>
+        <div className='mx-auto w-[180px]'>
+          <Image
+            className='mx-auto h-[180px] min-w-[180px] rounded-lg object-cover'
+            src={
+              playlist && playlist.images[0]
+                ? (playlist.images[0]?.url as string)
+                : '/placeholder-image.jpg'
+            }
+            width='180'
+            height='180'
+            alt='Playlist Cover'
+          />
+        </div>
+        <div className='flex w-full flex-col justify-end font-bold text-charcoal [@media(min-width:950px)]:ml-8 [@media(max-width:949px)]:px-3'>
+          <div className='w-[calc(100%-1.5rem)] text-[0.8rem] font-semibold [@media(min-width:950px)]:w-[calc(672px-(2rem+180px))]'>
+            PLAYLIST
+          </div>
+          <div className='w-[calc(100%-1.5rem)] break-words font-poppins text-5xl leading-tight line-clamp-2 [@media(min-width:950px)]:w-[calc(672px-(2rem+180px))]'>
+            {playlist?.name}
+          </div>
+          <div className='flex w-[calc(100%-1.5rem)] items-center text-sm font-normal [@media(min-width:950px)]:w-[calc(672px-(2rem+180px))] [@media(min-width:950px)]:space-x-2'>
+            <span className='cursor-pointer whitespace-nowrap font-semibold hover:underline [@media(max-width:949px)]:hidden'>
+              {playlist?.owner.display_name}
+            </span>
+            <span className='space-x-2 text-gray-500'>
+              <span className='font-poppins [@media(max-width:949px)]:hidden'>•</span>
+              <span>{playlist && playlist.followers && playlist?.followers.total} likes</span>
+              <span className='font-poppins'>•</span>
+              <span>{playlist?.tracks.total} songs,</span>
+              <span>{playlist && getPlaylistDuration(playlist.tracks.items)}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <table className='order-3 h-auto w-full text-left text-charcoal'>
         <thead>
           <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-gray-500'>
-            <th className='w-[5%] font-normal'>#</th>
-            <th className='w-[85%] font-normal'>TITLE</th>
+            <th className='w-[5%] font-normal [@media(max-width:949px)]:hidden'>#</th>
+            <th className='w-[90%] font-normal [@media(min-width:950px)]:w-[85%]'>TITLE</th>
             <th className='flex w-[10%] flex-shrink-0 items-center justify-end font-normal'>
               <Image
                 className='h-[25px] w-[25px]'

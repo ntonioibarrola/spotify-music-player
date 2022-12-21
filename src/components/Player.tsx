@@ -163,7 +163,7 @@ function Player() {
         />
       </div>
       <div className='flex h-[calc(100%-0.25rem)] w-full items-center justify-between rounded-b-lg px-10 text-charcoal'>
-        <div className='flex w-[40%] items-center gap-x-5'>
+        <div className='hidden w-[40%] items-center gap-x-5 [@media(min-width:950px)]:flex'>
           <Image
             className={`${
               isTrackPlaying ? 'animate-spin-slow-running' : 'animate-spin-slow-paused'
@@ -183,7 +183,7 @@ function Player() {
             </p>
           </div>
         </div>
-        <div className='mx-10 flex w-[20%] flex-col items-center gap-y-2'>
+        <div className='mx-auto flex w-full flex-col items-center gap-y-2 [@media(min-width:950px)]:mx-10 [@media(min-width:950px)]:w-[20%]'>
           <div className='space-x-2 text-sm text-gray-500'>
             <span>
               {trackProgress && track
@@ -254,7 +254,7 @@ function Player() {
             </div>
           </div>
         </div>
-        <div className='flex h-auto w-[40%] justify-end'>
+        <div className='hidden h-auto w-[40%] justify-end [@media(min-width:950px)]:flex'>
           <div className='flex items-center gap-x-5'>
             <div onClick={handleSpeakerClick}>
               <Image

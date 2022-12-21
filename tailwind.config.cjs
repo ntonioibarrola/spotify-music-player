@@ -15,7 +15,7 @@ module.exports = {
       colors: {
         spotify: {
           100: '#5e82ad',
-          200: '#82a3c2',
+          200: '#5175ae',
           300: '#333b4d',
         },
         charcoal: '#2a2829',

@@ -127,6 +127,9 @@
 
   ::-webkit-scrollbar {
     width: 14px;
+    background-clip: padding-box;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background-color: #edf0f4;
   }
 
   ::-webkit-scrollbar-thumb {

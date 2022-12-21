@@ -8,6 +8,7 @@ import getMessage from '../utils/message-utils';
 
 export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track, index }) => {
   const {
+    trackId,
     previewTrackId,
     isTrackPlaying,
     audio,
@@ -113,8 +114,8 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
         audio && track.id === previewTrackId && !isTrackPlaying
           ? 'before:w-full before:transition-all before:duration-[30s] before:ease-linear'
           : 'before:w-0'
-      } ${
-        previewTrackId && track.id !== previewTrackId ? 'opacity-40' : 'opacity-100'
+      } ${previewTrackId && track.id !== previewTrackId ? 'opacity-40' : 'opacity-100'} ${
+        isTrackPlaying && track.id === trackId && 'bg-spotify-100 hover:bg-spotify-200'
       } relative flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 transition-opacity before:absolute before:left-0
       before:h-full before:rounded-md before:bg-gray-300 hover:bg-gray-200`}
       onClick={playTrack}
@@ -123,8 +124,14 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
       onFocus={playPreviewTrack}
       onBlur={stopPreviewTrack}
     >
-      <td className='relative w-[5%] text-[0.95rem] text-gray-500'>{index + 1}</td>
-      <td className='before:content-[" "] relative flex w-[85%] items-center before:invisible'>
+      <td
+        className={`${
+          isTrackPlaying && track.id === trackId && 'text-white'
+        } relative w-[5%] text-[0.95rem] text-gray-500 [@media(max-width:949px)]:hidden`}
+      >
+        {index + 1}
+      </td>
+      <td className='before:content-[" "] relative flex w-[90%] items-center before:invisible [@media(min-width:950px)]:w-[85%]'>
         <Image
           className='h-[50px] w-[50px] rounded-lg'
           src={track.album.images[0]?.url as string}
@@ -133,14 +140,38 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
           alt={`${track.album?.name} Album Cover`}
         />
         <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
-          <span className='text-base'>{track?.name}</span>
-          <br />
-          <span className='cursor-pointer text-[0.95rem] text-gray-500 hover:underline'>
-            {getSongArtists(track?.artists)}
+          <span className={`${isTrackPlaying && track.id === trackId && 'text-white'} text-base`}>
+            {track?.name}
           </span>
+          <br />
+          <div className='flex items-center gap-2'>
+            {track.explicit && (
+              <span
+                className={`${
+                  isTrackPlaying && track.id === trackId
+                    ? 'bg-white text-spotify-100'
+                    : 'bg-gray-400'
+                } inline-flex max-h-[1.1rem] min-h-[1.1rem] min-w-[1.1rem] items-center justify-center rounded-sm
+                text-[0.5rem] font-light text-white`}
+              >
+                E
+              </span>
+            )}
+            <span
+              className={`${
+                isTrackPlaying && track.id === trackId && 'text-white'
+              } cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] text-gray-500 hover:underline`}
+            >
+              {getSongArtists(track?.artists)}
+            </span>
+          </div>
         </div>
       </td>
-      <td className='relative w-[10%] text-right text-[0.95rem] tracking-widest text-gray-500'>
+      <td
+        className={`${
+          isTrackPlaying && track.id === trackId && 'text-white'
+        } relative w-[10%] text-right text-[0.95rem] tracking-widest text-gray-500`}
+      >
         {getSongDuration(track?.duration_ms)}
       </td>
     </tr>

@@ -74,10 +74,16 @@ const Home: NextPage = () => {
           <Player />
         </div>
       </main> */}
-      <main className='grid h-screen grid-cols-[1fr_minmax(950px,_1500px)_1fr] bg-spotify-100'>
+      <main className='grid h-screen bg-spotify-100 [@media(min-width:950px)]:grid-cols-[1fr_minmax(950px,_1500px)_1fr]'>
         <Message />
-        <div className='col-start-2 col-end-3 flex flex-col justify-center overflow-y-hidden px-10'>
-          <div className='grid h-[85%] grid-cols-[1fr_32rem_1fr] grid-rows-[1fr_8rem] overflow-x-hidden rounded-lg bg-offwhite'>
+        <div
+          className='flex flex-col justify-center overflow-y-hidden [@media(min-width:950px)]:col-start-2
+          [@media(min-width:950px)]:col-end-3 [@media(min-width:950px)]:px-10'
+        >
+          <div
+            className='grid h-full grid-rows-[1fr_8rem] overflow-x-hidden bg-offwhite shadow-lg
+            [@media(min-width:950px)]:h-[85%] [@media(min-width:950px)]:grid-cols-[1fr_32rem_1fr] [@media(min-width:950px)]:rounded-lg'
+          >
             <div className='col-start-1 col-end-4 row-start-1 row-end-2 overflow-x-hidden overflow-y-scroll py-10'>
               <Playlist />
             </div>

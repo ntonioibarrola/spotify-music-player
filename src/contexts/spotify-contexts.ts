@@ -10,7 +10,7 @@ import {
 interface PlaylistState {
   playlists: SpotifyPlaylists;
   playlist: SpotifyPlaylist | null;
-  playlistId: string | null; // Not used at all
+  playlistId: string | null;
 
   setPlaylists: (playlists: PlaylistState['playlists']) => void;
   setPlaylist: (playlist: PlaylistState['playlist']) => void;
