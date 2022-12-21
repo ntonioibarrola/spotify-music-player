@@ -6,7 +6,11 @@ import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 import getMessage from '../utils/message-utils';
 
-export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track, index }) => {
+export const Track: React.FC<{ track: SpotifyTrack; index: number; offset: number }> = ({
+  track,
+  index,
+  offset,
+}) => {
   const {
     trackId,
     previewTrackId,
@@ -46,7 +50,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
       .play({
         context_uri: playlist?.uri,
         offset: {
-          position: index,
+          position: offset,
         },
       })
       .then(() => {
@@ -116,8 +120,8 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
           : 'before:w-0'
       } ${previewTrackId && track.id !== previewTrackId ? 'opacity-40' : 'opacity-100'} ${
         isTrackPlaying && track.id === trackId && 'bg-spotify-100 hover:bg-spotify-200'
-      } relative flex h-16 cursor-pointer items-center justify-between gap-5 rounded-md p-3 transition-opacity before:absolute before:left-0
-      before:h-full before:rounded-md before:bg-gray-300 hover:bg-gray-200`}
+      } relative flex h-16 cursor-pointer items-center justify-between gap-5 p-3 transition-opacity before:absolute before:left-0 before:h-full
+        before:bg-gray-300 hover:bg-gray-200 [@media(min-width:42rem)]:rounded-md before:[@media(min-width:42rem)]:rounded-md`}
       onClick={playTrack}
       onMouseOver={playPreviewTrack}
       onMouseLeave={stopPreviewTrack}
@@ -131,7 +135,11 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
       >
         {index + 1}
       </td>
-      <td className='before:content-[" "] relative flex w-[90%] items-center before:invisible [@media(min-width:950px)]:w-[85%]'>
+      <td
+        className={`${
+          isTrackPlaying && track.id === trackId && 'text-white'
+        } before:content-[" "] relative flex w-[90%] items-center text-charcoal before:invisible [@media(min-width:950px)]:w-[85%]`}
+      >
         <Image
           className='h-[50px] w-[50px] rounded-lg'
           src={track.album.images[0]?.url as string}
@@ -140,7 +148,11 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number }> = ({ track,
           alt={`${track.album?.name} Album Cover`}
         />
         <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
-          <span className={`${isTrackPlaying && track.id === trackId && 'text-white'} text-base`}>
+          <span
+            className={`${
+              isTrackPlaying && track.id === trackId && 'text-white'
+            } text-base text-charcoal`}
+          >
             {track?.name}
           </span>
           <br />

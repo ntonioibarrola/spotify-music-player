@@ -81,7 +81,7 @@ const Home: NextPage = () => {
           [@media(min-width:950px)]:col-end-3 [@media(min-width:950px)]:px-10'
         >
           <div
-            className='grid h-full grid-rows-[1fr_8rem] overflow-x-hidden bg-offwhite shadow-lg
+            className='grid h-full grid-rows-[1fr_8rem] overflow-x-hidden bg-offwhite shadow-lg shadow-spotify-200
             [@media(min-width:950px)]:h-[85%] [@media(min-width:950px)]:grid-cols-[1fr_32rem_1fr] [@media(min-width:950px)]:rounded-lg'
           >
             <div className='col-start-1 col-end-4 row-start-1 row-end-2 overflow-x-hidden overflow-y-scroll py-10'>

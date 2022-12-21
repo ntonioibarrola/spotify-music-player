@@ -45,10 +45,10 @@ const Dropdown: FC = () => {
             >
               <span>My Playlists</span>
               <Image
-                className='ml-2 h-4 w-4 text-opacity-70 transition duration-150 ease-in-out group-hover:text-opacity-80 ui-open:rotate-180 ui-open:text-opacity-100'
+                className='ml-2 h-3 w-3 text-opacity-70 transition duration-150 ease-in-out group-hover:text-opacity-80 ui-open:rotate-180 ui-open:text-opacity-100'
                 src={'/chevron-down.svg'}
-                width='16'
-                height='16'
+                width='12'
+                height='12'
                 alt={'Popover Icon'}
               />
             </Popover.Button>
@@ -61,7 +61,7 @@ const Dropdown: FC = () => {
               leaveFrom='opacity-100 translate-y-0'
               leaveTo='opacity-0 translate-y-1'
             >
-              <Popover.Panel className='absolute left-[13px] z-10 mt-3 max-h-96 w-screen max-w-[320px] -translate-x-1/2 transform [@media(min-width:950px)]:-left-[35px]'>
+              <Popover.Panel className='absolute left-[9px] z-10 mt-3 max-h-96 w-screen max-w-[320px] -translate-x-1/2 transform [@media(min-width:950px)]:-left-[39px]'>
                 <div className='max-h-96 w-full overflow-x-hidden overflow-y-scroll overscroll-contain rounded-lg shadow-lg shadow-[rgba(0,0,0,0.05)] [&::-webkit-scrollbar]:bg-white'>
                   <div className='relative flex flex-col items-center gap-7 bg-white p-7'>
                     {playlists &&

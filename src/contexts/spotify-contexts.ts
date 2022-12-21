@@ -40,9 +40,31 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
   },
 
   getPlaylist: async (spotifyApi, playlistId) => {
-    const playlist = await spotifyApi.getPlaylist(playlistId).then((data) => {
+    const tracks = await spotifyApi.getPlaylistTracks(playlistId).then((data) => {
       return data.body;
     });
+
+    const totalBatches = Math.floor(tracks.total / 100) + 1;
+    let allTracks: SpotifyApi.PlaylistTrackObject[] = [];
+
+    for (let i = 0; i < totalBatches; i++) {
+      let nextTrackBatch = await spotifyApi
+        .getPlaylistTracks(playlistId, { offset: i * 100 })
+        .then((data) => {
+          return data.body.items;
+        });
+
+      allTracks = allTracks.concat(nextTrackBatch).map((items, index) => ({
+        ...items,
+        track: { ...items.track, offset: index },
+      })) as SpotifyApi.PlaylistTrackObject[];
+    }
+
+    let playlist = await spotifyApi.getPlaylist(playlistId).then((data) => {
+      return data.body;
+    });
+
+    playlist.tracks.items = allTracks.filter((item) => item.track && item.track.id);
     return playlist;
   },
 }));

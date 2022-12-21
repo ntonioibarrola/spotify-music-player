@@ -48,18 +48,18 @@ function Playlist() {
   return (
     <div className='relative mx-auto flex h-auto min-w-[20rem] max-w-[42rem] flex-col space-y-8'>
       <div
-        className='order-1 mt-4 flex justify-center gap-2 [@media(min-width:950px)]:order-3 [@media(min-width:950px)]:mt-8 [@media(min-width:950px)]:justify-end
-        [@media(max-width:949px)]:-mb-4 [@media(max-width:949px)]:px-3'
+        className='order-1 mt-4 flex justify-center gap-2 [@media(max-width:949px)]:-mb-4 [@media(max-width:949px)]:px-3 [@media(min-width:950px)]:order-3
+        [@media(min-width:950px)]:mt-8 [@media(min-width:950px)]:justify-end'
       >
         <button
-          className='rounded-md border-[1px] border-solid border-gray-500 px-5 text-sm font-bold opacity-40 hover:opacity-80'
+          className='rounded-md border-[1px] border-solid border-gray-500 px-5 text-sm font-bold opacity-40 hover:opacity-60'
           onClick={() => signOut()}
         >
           Logout
         </button>
         <Dropdown />
       </div>
-      <div className='order-2 flex h-auto w-full flex-col [@media(min-width:950px)]:flex-row [@media(min-width:950px)]:pt-8 [@media(max-width:949px)]:gap-5'>
+      <div className='order-2 flex h-auto w-full flex-col [@media(max-width:949px)]:gap-5 [@media(min-width:950px)]:flex-row [@media(min-width:950px)]:pt-8'>
         <div className='mx-auto w-[180px]'>
           <Image
             className='mx-auto h-[180px] min-w-[180px] rounded-lg object-cover'
@@ -73,7 +73,7 @@ function Playlist() {
             alt='Playlist Cover'
           />
         </div>
-        <div className='flex w-full flex-col justify-end font-bold text-charcoal [@media(min-width:950px)]:ml-8 [@media(max-width:949px)]:px-3'>
+        <div className='flex w-full flex-col justify-end font-bold text-charcoal [@media(max-width:949px)]:px-3 [@media(min-width:950px)]:ml-8'>
           <div className='w-[calc(100%-1.5rem)] text-[0.8rem] font-semibold [@media(min-width:950px)]:w-[calc(672px-(2rem+180px))]'>
             PLAYLIST
           </div>
@@ -113,7 +113,12 @@ function Playlist() {
         <tbody>
           {playlist &&
             playlist.tracks.items.map((item, index) => (
-              <Track key={`${item.track?.id}`} track={item.track as SpotifyTrack} index={index} />
+              <Track
+                key={`${item.track?.id}`}
+                track={item.track as SpotifyTrack}
+                index={index}
+                offset={item.track?.offset as number}
+              />
             ))}
         </tbody>
       </table>

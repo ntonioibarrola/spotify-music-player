@@ -258,7 +258,7 @@ function Player() {
           <div className='flex items-center gap-x-5'>
             <div onClick={handleSpeakerClick}>
               <Image
-                className={`${isMuted ? 'hidden' : ''} cursor-pointer opacity-40 hover:opacity-80`}
+                className={`${isMuted ? 'hidden' : ''} cursor-pointer opacity-60 hover:opacity-90`}
                 src={'/speaker.svg'}
                 width='20'
                 height='20'
@@ -266,7 +266,7 @@ function Player() {
                 alt={`Volume Button`}
               />
               <Image
-                className={`${isMuted ? '' : 'hidden'} cursor-pointer opacity-40 hover:opacity-80`}
+                className={`${isMuted ? '' : 'hidden'} cursor-pointer opacity-60 hover:opacity-90`}
                 src={'/mute.svg'}
                 width='20'
                 height='20'
