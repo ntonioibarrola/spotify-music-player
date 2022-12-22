@@ -28,8 +28,6 @@ function Player() {
   const [saveVolume, setSaveVolume] = useState<number>(volume);
   const spotifyApi = useSpotify();
 
-  const rangeRef = useRef<HTMLInputElement>(null);
-
   const handleError = (error: string) => {
     let message = null;
 
@@ -94,7 +92,7 @@ function Player() {
   useEffect(() => {
     if (!spotifyApi.getAccessToken() || !trackId) return;
 
-    if (volume > 0 && volume < 100) {
+    if (volume >= 0 && volume <= 100) {
       debouncedVolume(volume);
     }
   }, [volume]);
@@ -116,13 +114,9 @@ function Player() {
   };
 
   const handleSpeakerClick = () => {
-    if (!rangeRef.current || !rangeRef.current.value) return;
-
-    if (rangeRef.current.value === '0' && isMuted) {
-      rangeRef.current.value = String(saveVolume);
+    if (volume === 0 && isMuted) {
       setVolume(saveVolume);
     } else {
-      rangeRef.current.value = '0';
       spotifyApi.setVolume(0);
       setSaveVolume(volume);
       setVolume(0);
@@ -162,7 +156,67 @@ function Player() {
           className='absolute h-1 bg-spotify-100'
         />
       </div>
-      <div className='flex h-[calc(100%-0.25rem)] w-full items-center justify-between rounded-b-lg px-10 text-charcoal'>
+      <div
+        className={`${
+          !isTrackPlaying && 'hidden'
+        } flex h-[4rem] w-full items-center justify-between border-[1px] border-solid border-b-gray-300 px-2 [@media(min-width:950px)]:hidden`}
+      >
+        <div className='flex w-[60%] items-center gap-2'>
+          <Image
+            className='h-[50px] w-[50px] rounded-lg object-cover'
+            src={track?.album.images[0] ? track.album.images[0].url : '/placeholder-image.jpg'}
+            width='50'
+            height='50'
+            draggable={false}
+            alt={`${track?.album.name} Album Cover`}
+          />
+          <div className='overflow-hidden whitespace-nowrap leading-6'>
+            <p className='cursor-pointer overflow-hidden text-ellipsis text-sm font-semibold hover:underline'>
+              {track?.name}
+            </p>
+            <p className='cursor-pointer overflow-hidden text-ellipsis text-xs text-gray-500 hover:underline'>
+              {getSongArtists(track?.artists)}
+            </p>
+          </div>
+        </div>
+        <div className='flex w-[40%] items-center justify-end gap-2'>
+          <div onClick={handleSpeakerClick}>
+            <Image
+              className={`${
+                isMuted ? 'hidden' : ''
+              } min-w-[20px] cursor-pointer opacity-60 hover:opacity-90`}
+              src={'/speaker.svg'}
+              width='20'
+              height='20'
+              draggable={false}
+              alt={`Volume Button`}
+            />
+            <Image
+              className={`${
+                isMuted ? '' : 'hidden'
+              } min-w-[20px] cursor-pointer opacity-60 hover:opacity-90`}
+              src={'/mute.svg'}
+              width='20'
+              height='20'
+              draggable={false}
+              alt={`Mute Button`}
+            />
+          </div>
+          <input
+            style={{ backgroundSize: ((volume - 0) * 100) / (100 - 0) + '% 100%' }}
+            className='w-[70px] cursor-pointer sm:w-[150px]'
+            type='range'
+            step='10'
+            value={volume}
+            onChange={handleVolumeChange}
+          />
+        </div>
+      </div>
+      <div
+        className={`${
+          isTrackPlaying ? 'h-[calc(100%-0.25rem-4rem)]' : 'h-[calc(100%-0.25rem)]'
+        } flex w-full items-center justify-between rounded-b-lg px-10 text-charcoal [@media(min-width:950px)]:h-[calc(100%-0.25rem)]`}
+      >
         <div className='hidden w-[40%] items-center gap-x-5 [@media(min-width:950px)]:flex'>
           <Image
             className={`${
@@ -276,10 +330,10 @@ function Player() {
             </div>
             <input
               style={{ backgroundSize: ((volume - 0) * 100) / (100 - 0) + '% 100%' }}
-              className='cursor-pointer'
+              className='w-[200px] cursor-pointer'
               type='range'
               step='10'
-              ref={rangeRef}
+              value={volume}
               onChange={handleVolumeChange}
             />
           </div>

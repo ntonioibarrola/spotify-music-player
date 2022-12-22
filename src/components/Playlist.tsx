@@ -46,9 +46,9 @@ function Playlist() {
   }, [session, spotifyApi, playlists]);
 
   return (
-    <div className='relative mx-auto flex h-auto min-w-[20rem] max-w-[42rem] flex-col space-y-8'>
+    <div className='relative mx-auto flex h-auto min-w-[20rem] max-w-[42rem] flex-col space-y-5'>
       <div
-        className='order-1 mt-4 flex justify-center gap-2 [@media(max-width:949px)]:-mb-4 [@media(max-width:949px)]:px-3 [@media(min-width:950px)]:order-3
+        className='order-1 mt-4 flex justify-center gap-2 [@media(max-width:949px)]:-mb-3 [@media(max-width:949px)]:px-3 [@media(min-width:950px)]:order-3
         [@media(min-width:950px)]:mt-8 [@media(min-width:950px)]:justify-end'
       >
         <button
@@ -98,8 +98,8 @@ function Playlist() {
         <thead>
           <tr className='flex h-16 items-center gap-5 rounded-md p-3 text-xs tracking-widest text-gray-500'>
             <th className='w-[5%] font-normal [@media(max-width:949px)]:hidden'>#</th>
-            <th className='w-[90%] font-normal [@media(min-width:950px)]:w-[85%]'>TITLE</th>
-            <th className='flex w-[10%] flex-shrink-0 items-center justify-end font-normal'>
+            <th className='w-[80%] font-normal'>TITLE</th>
+            <th className='flex w-[20%] flex-shrink-0 items-center justify-end font-normal'>
               <Image
                 className='h-[25px] w-[25px]'
                 src={'/clock.svg'}

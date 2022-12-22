@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useMessageStore } from '../contexts/message-contexts';
-import { usePlaylistStore } from '../contexts/spotify-contexts';
+import { usePlaylistStore, useTrackStore } from '../contexts/spotify-contexts';
 import { SpotifyPlaylists } from '../types/spotify-types';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -17,6 +17,7 @@ import getMessage from '../utils/message-utils';
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const { setMessage, setIsMessageOpen } = useMessageStore();
+  const { isTrackPlaying } = useTrackStore();
   const { getPlaylists, setPlaylists } = usePlaylistStore();
   const spotifyApi = useSpotify();
 
@@ -74,20 +75,22 @@ const Home: NextPage = () => {
           <Player />
         </div>
       </main> */}
-      <main className='grid h-screen bg-spotify-100 [@media(min-width:950px)]:grid-cols-[1fr_minmax(950px,_1500px)_1fr]'>
+      <main className='grid h-screen bg-spotify-100 [@media(min-width:950px)]:grid-cols-[1fr_minmax(950px,_1250px)_1fr]'>
         <Message />
         <div
           className='flex flex-col justify-center overflow-y-hidden [@media(min-width:950px)]:col-start-2
           [@media(min-width:950px)]:col-end-3 [@media(min-width:950px)]:px-10'
         >
           <div
-            className='grid h-full grid-rows-[1fr_8rem] overflow-x-hidden bg-offwhite shadow-lg shadow-spotify-200
-            [@media(min-width:950px)]:h-[85%] [@media(min-width:950px)]:grid-cols-[1fr_32rem_1fr] [@media(min-width:950px)]:rounded-lg'
+            className={`${
+              isTrackPlaying ? 'grid-rows-[1fr_calc(8rem+4rem)]' : 'grid-rows-[1fr_8rem]'
+            } grid h-full overflow-x-hidden bg-offwhite shadow-lg shadow-spotify-200 [@media(min-width:950px)]:h-[85%]
+            [@media(min-width:950px)]:grid-cols-[1fr_32rem_1fr] [@media(min-width:950px)]:grid-rows-[1fr_8rem] [@media(min-width:950px)]:rounded-lg`}
           >
             <div className='col-start-1 col-end-4 row-start-1 row-end-2 overflow-x-hidden overflow-y-scroll py-10'>
               <Playlist />
             </div>
-            <div className='col-start-1 col-end-4 row-start-2 row-end-3'>
+            <div className='col-start-1 col-end-4 row-start-2 row-end-3 min-w-[20rem]'>
               <Player />
             </div>
           </div>

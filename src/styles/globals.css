@@ -147,7 +147,6 @@
   }
 
   input[type='range'] {
-    width: 200px;
     height: 0.3125rem;
     border-radius: 0.5rem;
     background: white;

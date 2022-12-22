@@ -138,7 +138,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number; offset: numbe
       <td
         className={`${
           isTrackPlaying && track.id === trackId && 'text-white'
-        } before:content-[" "] relative flex w-[90%] items-center text-charcoal before:invisible [@media(min-width:950px)]:w-[85%]`}
+        } before:content-[" "] relative flex w-[80%] items-center text-charcoal before:invisible`}
       >
         <Image
           className='h-[50px] w-[50px] rounded-lg'
@@ -182,7 +182,7 @@ export const Track: React.FC<{ track: SpotifyTrack; index: number; offset: numbe
       <td
         className={`${
           isTrackPlaying && track.id === trackId && 'text-white'
-        } relative w-[10%] text-right text-[0.95rem] tracking-widest text-gray-500`}
+        } relative w-[20%] text-right text-[0.95rem] tracking-widest text-gray-500`}
       >
         {getSongDuration(track?.duration_ms)}
       </td>
