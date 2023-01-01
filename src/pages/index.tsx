@@ -1,13 +1,10 @@
-import { useCallback, useEffect } from 'react';
+import { Fragment, useCallback, useEffect } from 'react';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useMessageStore } from '../contexts/message-contexts';
 import { usePlaylistStore, useTrackStore } from '../contexts/spotify-contexts';
 import { SpotifyPlaylists } from '../types/spotify-types';
 import Head from 'next/head';
-import Image from 'next/image';
-import Center from '../components/Center';
-import Sidebar from '../components/Sidebar';
 import Message from '../components/Message';
 import Playlist from '../components/Playlist';
 import Player from '../components/Player';
@@ -59,22 +56,11 @@ const Home: NextPage = () => {
   );
 
   return (
-    <>
+    <Fragment>
       <Head>
         <title>Bounce - Themed Spotify</title>
         <link rel='icon' href='/spotify.svg' />
       </Head>
-      {/* <main className='grid h-screen grid-cols-[minmax(300px,_380px)_1fr] grid-rows-[1fr_8rem]'>
-        <div className='col-start-1 col-end-2'>
-          <Sidebar />
-        </div>
-        <div className='col-start-2 col-end-3 overflow-y-scroll'>
-          <Center />
-        </div>
-        <div className='col-start-1 col-end-3'>
-          <Player />
-        </div>
-      </main> */}
       <main className='grid h-screen bg-spotify-100 [@media(min-width:950px)]:grid-cols-[1fr_minmax(950px,_1250px)_1fr]'>
         <Message />
         <div
@@ -96,7 +82,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-    </>
+    </Fragment>
   );
 };
 

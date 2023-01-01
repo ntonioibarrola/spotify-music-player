@@ -1,13 +1,12 @@
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, FC, useEffect } from 'react';
 import { useNoAuthStore } from '../contexts/spotify-noauth-contexts';
 import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 
-function NoAuthPlayer() {
+const NoAuthPlayer: FC = () => {
   const {
     tracks,
     track,
-    trackId,
     isTrackPlaying,
     trackProgress,
     playingAudio,
@@ -343,6 +342,6 @@ function NoAuthPlayer() {
       </div>
     </div>
   );
-}
+};
 
 export default NoAuthPlayer;

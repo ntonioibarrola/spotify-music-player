@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useMessageStore } from '../contexts/message-contexts';
 import { useTrackStore } from '../contexts/spotify-contexts';
@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce';
 import useSpotify from '../hooks/useSpotify';
 import getMessage from '../utils/message-utils';
 
-function Player() {
+const Player = () => {
   const { data: session } = useSession();
   const {
     track,
@@ -341,6 +341,6 @@ function Player() {
       </div>
     </div>
   );
-}
+};
 
 export default Player;

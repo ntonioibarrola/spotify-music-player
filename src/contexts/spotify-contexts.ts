@@ -5,6 +5,7 @@ import {
   SpotifyPlaylist,
   SpotifyPlaylists,
   SpotifyTrack,
+  SpotifyTracks,
 } from '../types/spotify-types';
 
 interface PlaylistState {
@@ -45,7 +46,7 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
     });
 
     const totalBatches = Math.floor(tracks.total / 100) + 1;
-    let allTracks: SpotifyApi.PlaylistTrackObject[] = [];
+    let allTracks: SpotifyTracks = [];
 
     for (let i = 0; i < totalBatches; i++) {
       let nextTrackBatch = await spotifyApi
@@ -57,7 +58,7 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
       allTracks = allTracks.concat(nextTrackBatch).map((items, index) => ({
         ...items,
         track: { ...items.track, offset: index },
-      })) as SpotifyApi.PlaylistTrackObject[];
+      })) as SpotifyTracks;
     }
 
     let playlist = await spotifyApi.getPlaylist(playlistId).then((data) => {

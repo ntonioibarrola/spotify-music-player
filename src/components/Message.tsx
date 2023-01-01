@@ -7,7 +7,7 @@ const Message: FC = () => {
   const { message, isMessageOpen, setIsMessageOpen } = useMessageStore();
 
   return (
-    <>
+    <Fragment>
       <Transition appear show={isMessageOpen} as={Fragment}>
         <Dialog as='div' className='relative z-10' onClose={() => setIsMessageOpen(false)}>
           <Transition.Child
@@ -100,7 +100,7 @@ const Message: FC = () => {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </Fragment>
   );
 };
 

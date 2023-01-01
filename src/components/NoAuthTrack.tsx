@@ -1,9 +1,15 @@
+import { FC } from 'react';
 import { useNoAuthStore } from '../contexts/spotify-noauth-contexts';
 import { SpotifyTrack } from '../types/spotify-types';
 import { getSongArtists, getSongDuration } from '../utils/helper-utils';
 import Image from 'next/image';
 
-export const NoAuthTrack: React.FC<{ track: SpotifyTrack; index: number }> = ({ track, index }) => {
+interface NoAuthTrackProps {
+  track: SpotifyTrack;
+  index: number;
+}
+
+export const NoAuthTrack: FC<NoAuthTrackProps> = ({ track, index }) => {
   const {
     trackId,
     previewTrackId,

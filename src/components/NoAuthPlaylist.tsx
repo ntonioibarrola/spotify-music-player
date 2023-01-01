@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useNoAuthStore } from '../contexts/spotify-noauth-contexts';
 import { SpotifyTrack } from '../types/spotify-types';
 import { getPlaylistDuration } from '../utils/helper-utils';
@@ -6,7 +7,7 @@ import Link from 'next/link';
 import NoAuthDropdown from './NoAuthDropdown';
 import NoAuthTrack from './NoAuthTrack';
 
-function Playlist() {
+const NoAuthPlaylist: FC = () => {
   const {
     playlist,
     playingAudio,
@@ -120,6 +121,6 @@ function Playlist() {
       </table>
     </div>
   );
-}
+};
 
-export default Playlist;
+export default NoAuthPlaylist;

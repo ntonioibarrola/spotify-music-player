@@ -19,13 +19,16 @@ export const getAccessToken = async (): Promise<string> => {
   return access_token;
 };
 
-export const getNoAuthPlaylist = async (
-  id: string,
-): Promise<{ playlist: SpotifyPlaylist; tracks: SpotifyTracks }> => {
+interface getNoAuthPlaylistProps {
+  playlist: SpotifyPlaylist;
+  tracks: SpotifyTracks;
+}
+
+export const getNoAuthPlaylist = async (playlistId: string): Promise<getNoAuthPlaylistProps> => {
   const accessToken = await getAccessToken();
 
   const tracksRequest = await fetch(
-    `https://api.spotify.com/v1/playlists/${id}/tracks?offset=${0}`,
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${0}`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -40,7 +43,7 @@ export const getNoAuthPlaylist = async (
 
   for (let i = 0; i < totalBatches; i++) {
     let nextTrackBatch = await fetch(
-      `https://api.spotify.com/v1/playlists/${id}/tracks?offset=${i * 100}`,
+      `https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${i * 100}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -61,7 +64,7 @@ export const getNoAuthPlaylist = async (
     track: { ...items.track, offset: index },
   })) as SpotifyTracks;
 
-  const playlistRequest = await fetch(`https://api.spotify.com/v1/playlists/${id}`, {
+  const playlistRequest = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

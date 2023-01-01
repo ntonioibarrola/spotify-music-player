@@ -1,13 +1,14 @@
+import { FC } from 'react';
 import { GetServerSideProps } from 'next';
 import { type ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-interface Props {
+interface LoginProps {
   providers: Awaited<ReturnType<typeof getProviders>>;
 }
 
-const Login: React.FC<{ providers: Props['providers'] }> = ({ providers }) => {
+const Login: FC<LoginProps> = ({ providers }) => {
   const { name: providerName, id: providerId } = providers?.spotify as ClientSafeProvider;
 
   return (
@@ -30,7 +31,7 @@ const Login: React.FC<{ providers: Props['providers'] }> = ({ providers }) => {
 
 export default Login;
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+export const getServerSideProps: GetServerSideProps<LoginProps> = async () => {
   const providers = await getProviders();
 
   return {

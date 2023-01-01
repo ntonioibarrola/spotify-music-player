@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { Fragment, useCallback, useEffect } from 'react';
 import { GetStaticProps, type NextPage } from 'next';
 import { useMessageStore } from '../../contexts/message-contexts';
 import { useNoAuthStore } from '../../contexts/spotify-noauth-contexts';
@@ -10,10 +10,12 @@ import NoAuthPlaylist from '../../components/NoAuthPlaylist';
 import NoAuthPlayer from '../../components/NoAuthPlayer';
 import getMessage from '../../utils/message-utils';
 
-const NoAuthHome: NextPage<{
+interface NoAuthHomeProps {
   playlist: SpotifyPlaylist;
   tracks: SpotifyTracks;
-}> = ({ playlist, tracks }) => {
+}
+
+const NoAuthHome: NextPage<NoAuthHomeProps> = ({ playlist, tracks }) => {
   const { setMessage, setIsMessageOpen } = useMessageStore();
   const { isTrackPlaying, setPlaylist, setTracks } = useNoAuthStore();
 
@@ -35,7 +37,7 @@ const NoAuthHome: NextPage<{
   );
 
   return (
-    <>
+    <Fragment>
       <Head>
         <title>Bounce - Themed Spotify</title>
         <link rel='icon' href='/spotify.svg' />
@@ -61,11 +63,11 @@ const NoAuthHome: NextPage<{
           </div>
         </div>
       </main>
-    </>
+    </Fragment>
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<NoAuthHomeProps> = async () => {
   const { playlist, tracks } = await getNoAuthPlaylist('13WYhzJvxrVuFtIFW2J45o');
 
   return {

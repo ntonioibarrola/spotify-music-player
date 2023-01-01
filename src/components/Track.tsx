@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useMessageStore } from '../contexts/message-contexts';
 import { usePlaylistStore, useTrackStore } from '../contexts/spotify-contexts';
 import { SpotifyTrack } from '../types/spotify-types';
@@ -6,11 +7,13 @@ import Image from 'next/image';
 import useSpotify from '../hooks/useSpotify';
 import getMessage from '../utils/message-utils';
 
-export const Track: React.FC<{ track: SpotifyTrack; index: number; offset: number }> = ({
-  track,
-  index,
-  offset,
-}) => {
+interface TrackProps {
+  track: SpotifyTrack;
+  index: number;
+  offset: number;
+}
+
+export const Track: FC<TrackProps> = ({ track, index, offset }) => {
   const {
     trackId,
     previewTrackId,
