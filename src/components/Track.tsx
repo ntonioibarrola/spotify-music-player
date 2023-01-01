@@ -117,14 +117,19 @@ export const Track: FC<TrackProps> = ({ track, index, offset }) => {
 
   return (
     <tr
-      className={`${
+      className={`relative flex h-16 cursor-pointer items-center justify-between gap-5 p-3 transition-opacity before:absolute before:left-0 before:h-full
+      before:bg-gray-300 [@media(min-width:42rem)]:rounded-md before:[@media(min-width:42rem)]:rounded-md
+      ${
         audio && track.id === previewTrackId && !isTrackPlaying
           ? 'before:w-full before:transition-all before:duration-[30s] before:ease-linear'
           : 'before:w-0'
-      } ${previewTrackId && track.id !== previewTrackId ? 'opacity-40' : 'opacity-100'} ${
-        isTrackPlaying && track.id === trackId && 'bg-spotify-100 hover:bg-spotify-200'
-      } relative flex h-16 cursor-pointer items-center justify-between gap-5 p-3 transition-opacity before:absolute before:left-0 before:h-full
-        before:bg-gray-300 hover:bg-gray-200 [@media(min-width:42rem)]:rounded-md before:[@media(min-width:42rem)]:rounded-md`}
+      }
+      ${previewTrackId && track.id !== previewTrackId ? 'opacity-40' : 'opacity-100'}
+      ${
+        isTrackPlaying && track.id === trackId
+          ? 'bg-spotify-100 hover:bg-spotify-200'
+          : 'hover:bg-gray-200'
+      }`}
       onClick={playTrack}
       onMouseOver={playPreviewTrack}
       onMouseLeave={stopPreviewTrack}
@@ -132,16 +137,14 @@ export const Track: FC<TrackProps> = ({ track, index, offset }) => {
       onBlur={stopPreviewTrack}
     >
       <td
-        className={`${
-          isTrackPlaying && track.id === trackId && 'text-white'
-        } relative w-[5%] text-[0.95rem] text-gray-500 [@media(max-width:949px)]:hidden`}
+        className={`relative w-[5%] text-[0.95rem] [@media(max-width:949px)]:hidden
+        ${isTrackPlaying && track.id === trackId ? 'text-white' : 'text-gray-500'}`}
       >
         {index + 1}
       </td>
       <td
-        className={`${
-          isTrackPlaying && track.id === trackId && 'text-white'
-        } before:content-[" "] relative flex w-[80%] items-center text-charcoal before:invisible`}
+        className={`before:content-[" "] relative flex w-[80%] items-center before:invisible
+        ${isTrackPlaying && track.id === trackId ? 'text-white' : 'text-charcoal'}`}
       >
         <Image
           className='h-[50px] w-[50px] rounded-lg'
@@ -152,9 +155,8 @@ export const Track: FC<TrackProps> = ({ track, index, offset }) => {
         />
         <div className='absolute left-0 right-0 ml-[4.5rem] overflow-hidden text-ellipsis whitespace-nowrap leading-5'>
           <span
-            className={`${
-              isTrackPlaying && track.id === trackId && 'text-white'
-            } text-base text-charcoal`}
+            className={`text-base
+            ${isTrackPlaying && track.id === trackId ? 'text-white' : 'text-charcoal'}`}
           >
             {track?.name}
           </span>
@@ -162,20 +164,20 @@ export const Track: FC<TrackProps> = ({ track, index, offset }) => {
           <div className='flex items-center gap-2'>
             {track.explicit && (
               <span
-                className={`${
+                className={`inline-flex max-h-[1.1rem] min-h-[1.1rem] min-w-[1.1rem] items-center justify-center rounded-sm
+                text-[0.5rem] font-light
+                ${
                   isTrackPlaying && track.id === trackId
                     ? 'bg-white text-spotify-100'
-                    : 'bg-gray-400'
-                } inline-flex max-h-[1.1rem] min-h-[1.1rem] min-w-[1.1rem] items-center justify-center rounded-sm
-                text-[0.5rem] font-light text-white`}
+                    : 'bg-gray-400 text-white'
+                }`}
               >
                 E
               </span>
             )}
             <span
-              className={`${
-                isTrackPlaying && track.id === trackId && 'text-white'
-              } cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] text-gray-500 hover:underline`}
+              className={`cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-[0.95rem] hover:underline
+              ${isTrackPlaying && track.id === trackId ? 'text-white' : 'text-gray-500'}`}
             >
               {getSongArtists(track?.artists)}
             </span>
@@ -183,9 +185,8 @@ export const Track: FC<TrackProps> = ({ track, index, offset }) => {
         </div>
       </td>
       <td
-        className={`${
-          isTrackPlaying && track.id === trackId && 'text-white'
-        } relative w-[20%] text-right text-[0.95rem] tracking-widest text-gray-500`}
+        className={`relative w-[20%] text-right text-[0.95rem] tracking-widest
+        ${isTrackPlaying && track.id === trackId ? 'text-white' : 'text-gray-500'}`}
       >
         {getSongDuration(track?.duration_ms)}
       </td>
