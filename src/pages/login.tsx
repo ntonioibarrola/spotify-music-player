@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { type ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
+import Link from 'next/link';
 import Image from 'next/image';
 
 interface Props {
@@ -18,6 +19,11 @@ const Login: React.FC<{ providers: Props['providers'] }> = ({ providers }) => {
       >
         Login with {providerName}
       </button>
+      <Link href='/preview'>
+        <button className='rounded-xl bg-spotify-100 px-6 py-3 font-bold text-white'>
+          See Preview
+        </button>
+      </Link>
     </div>
   );
 };
