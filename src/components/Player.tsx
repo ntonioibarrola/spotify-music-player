@@ -32,7 +32,7 @@ const Player = () => {
     let message = null;
 
     if (error.includes('NO_ACTIVE_DEVICE')) {
-      message = getMessage(error, 'warning');
+      message = getMessage(error, 'warning', 'https://open.spotify.com/');
     } else {
       message = getMessage(error, 'error');
     }

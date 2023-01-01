@@ -47,7 +47,7 @@ const Home: NextPage = () => {
     useCallback(() => {
       const description = `Welcome! To get started, please have a Spotify app (desktop or browser) running 
         in the background, and interact with it at least once (e.g. click the play button).`;
-      const message = getMessage(description, 'info');
+      const message = getMessage(description, 'info', 'https://open.spotify.com/');
 
       setMessage(message);
       setIsMessageOpen(true);

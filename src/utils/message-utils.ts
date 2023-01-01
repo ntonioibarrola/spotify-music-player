@@ -1,12 +1,12 @@
 import { Message } from '../types/message-types';
 
-const getMessage = (description: string, type: string): Message => {
+const getMessage = (description: string, type: string, url?: string): Message => {
   const warning = {
     type: 'warning',
     title: 'Warning!',
     description: `No active device found. Please have a Spotify app (desktop or browser) running 
         in the background, and interact with it at least once (e.g. click the play button).`,
-    url: 'https://open.spotify.com/',
+    url: url,
     button: 'Got it, thanks!',
   };
 
@@ -21,15 +21,28 @@ const getMessage = (description: string, type: string): Message => {
     type: 'info',
     title: 'Info.',
     description: description,
-    url: 'https://open.spotify.com/',
+    url: url,
     button: 'Got it, thanks!',
   };
 
   let message: Message = null;
 
-  if (type === 'warning') message = warning as Message;
-  if (type === 'error') message = error as Message;
-  if (type === 'info') message = info as Message;
+  switch (type) {
+    case 'warning':
+      message = warning as Message;
+      break;
+
+    case 'error':
+      message = error as Message;
+      break;
+
+    case 'info':
+      message = info as Message;
+      break;
+
+    default:
+      break;
+  }
 
   return message;
 };

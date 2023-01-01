@@ -28,7 +28,11 @@ const NoAuthHome: NextPage<NoAuthHomeProps> = ({ playlist, tracks }) => {
     useCallback(() => {
       const description = `Welcome! Note that this is only a preview! For the full experience, login to your Spotify 
         account by following the instructions in the GitHub page.`;
-      const message = getMessage(description, 'info');
+      const message = getMessage(
+        description,
+        'info',
+        'https://github.com/ntonioibarrola/spotify-music-player',
+      );
 
       setMessage(message);
       setIsMessageOpen(true);
