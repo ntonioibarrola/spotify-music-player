@@ -117,7 +117,10 @@ const Player = () => {
     if (volume === 0 && isMuted) {
       setVolume(saveVolume);
     } else {
-      spotifyApi.setVolume(0);
+      spotifyApi
+        .setVolume(0)
+        .then()
+        .catch((error) => handleError(error.message));
       setSaveVolume(volume);
       setVolume(0);
     }
