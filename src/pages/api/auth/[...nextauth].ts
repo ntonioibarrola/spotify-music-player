@@ -2,7 +2,6 @@ import NextAuth, { CallbacksOptions, type NextAuthOptions } from 'next-auth';
 import { ExtendedToken, TokenError } from '../../../types/authentication-types';
 import { scopes, spotifyApi } from '../../../utils/spotify-utils';
 import { env } from '../../../env/server.mjs';
-import DiscordProvider from 'next-auth/providers/discord';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
 const refreshAccessToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
@@ -67,14 +66,10 @@ const sessionCallback: CallbacksOptions['session'] = async ({ session, token }) 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     // ...add more providers here
     SpotifyProvider({
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      clientId: env.SPOTIFY_CLIENT_ID,
+      clientSecret: env.SPOTIFY_CLIENT_SECRET,
       authorization: {
         url: 'https://accounts.spotify.com/authorize',
         params: {
