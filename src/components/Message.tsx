@@ -41,10 +41,10 @@ const Message: FC = () => {
                     className={`h-[50px] w-[50px]`}
                     src={
                       message?.type === 'error'
-                        ? '/error.svg'
+                        ? '/icons/error.svg'
                         : message?.type === 'warning'
-                        ? '/warning.svg'
-                        : '/info.svg'
+                        ? '/icons/warning.svg'
+                        : '/icons/info.svg'
                     }
                     width='50'
                     height='50'

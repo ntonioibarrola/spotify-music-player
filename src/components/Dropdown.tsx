@@ -46,7 +46,7 @@ const Dropdown: FC = () => {
               <span>My Playlists</span>
               <Image
                 className='ml-2 h-3 w-3 text-opacity-70 transition duration-150 ease-in-out group-hover:text-opacity-80 ui-open:rotate-180 ui-open:text-opacity-100'
-                src={'/chevron-down.svg'}
+                src={'/icons/chevron-down.svg'}
                 width='12'
                 height='12'
                 alt={'Popover Icon'}

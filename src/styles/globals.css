@@ -6,8 +6,8 @@
 
 @font-face {
   font-family: 'F37 Ginger';
-  src: url('../fonts/F37Ginger-Bold.woff2') format('woff2'),
-    url('../fonts/F37Ginger-Bold.woff') format('woff');
+  src: url('/fonts/F37Ginger-Bold.woff2') format('woff2'),
+    url('/fonts/F37Ginger-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -15,8 +15,8 @@
 
 @font-face {
   font-family: 'F37 Ginger';
-  src: url('../fonts/F37Ginger-Thin.woff2') format('woff2'),
-    url('../fonts/F37Ginger-Thin.woff') format('woff');
+  src: url('/fonts/F37Ginger-Thin.woff2') format('woff2'),
+    url('/fonts/F37Ginger-Thin.woff') format('woff');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -24,8 +24,8 @@
 
 @font-face {
   font-family: 'F37 Ginger';
-  src: url('../fonts/F37Ginger-Light.woff2') format('woff2'),
-    url('../fonts/F37Ginger-Light.woff') format('woff');
+  src: url('/fonts/F37Ginger-Light.woff2') format('woff2'),
+    url('/fonts/F37Ginger-Light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -33,8 +33,7 @@
 
 @font-face {
   font-family: 'F37 Ginger';
-  src: url('../fonts/F37Ginger.woff2') format('woff2'),
-    url('../fonts/F37Ginger.woff') format('woff');
+  src: url('/fonts/F37Ginger.woff2') format('woff2'), url('/fonts/F37Ginger.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

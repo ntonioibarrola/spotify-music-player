@@ -4,36 +4,36 @@
 
 <div align="center">
   <a href="https://github.com/ntonioibarrola/spotify-music-player">
-    <img src="public/spotify.svg" alt="Logo" width="80" height="80">
+    <img src="/public/icons/spotify.svg" alt="Logo" width="80" height="80">
   </a>
 
-  # ♫🔹**Spotify Music Player**🔹♪
-  ![GitHub Last Commit][github-last-commit-url] 
-  ![GitHub Repo Size][github-repo-size-url] 
-  [![Demo][demo-badge]][demo-url]
-  
-  <br />
-  <div align="left">
-    <img src="/public/showcase-playlist.gif" width="80%" height="auto" style="border-radius:30px;"/>
-  </div>
-  <br /><br />
-  <div align="right">
-    <img src="/public/showcase-preview-track.gif" width="80%" height="auto" />
-  </div>
-  <br /><br />
-  <div align="left">
-    <img src="/public/showcase-player.gif" width="80%" height="auto" />
-  </div>
-  <br /><br />
-  <div align="right">
-    <img src="/public/showcase-responsiveness.gif" width="80%" height="auto" />
-  </div>
-  <br />
+# ♫🔹**Spotify Music Player**🔹♪
+
+![GitHub Last Commit][github-last-commit-url]
+![GitHub Repo Size][github-repo-size-url]
+[![Demo][demo-badge]][demo-url]
+
+<br />
+<div align="left">
+  <img src="/public/images/showcase-playlist.gif" width="80%" height="auto" style="border-radius:30px;"/>
+</div>
+<br /><br />
+<div align="right">
+  <img src="/public/images/showcase-preview-track.gif" width="80%" height="auto" />
+</div>
+<br /><br />
+<div align="left">
+  <img src="/public/images/showcase-player.gif" width="80%" height="auto" />
+</div>
+<br /><br />
+<div align="right">
+  <img src="/public/images/showcase-responsiveness.gif" width="80%" height="auto" />
+</div>
+<br />
 </div>
 
-
-
 <br /> <!-- TABLE OF CONTENTS -->
+
 ## Table of contents
 
 1. [Introduction](#introduction)
@@ -48,9 +48,8 @@
 4. [Contact](#contact)
 5. [Acknowledgments](#acknowledgments)
 
-
-
 <br /> <!-- ABOUT THE PROJECT -->
+
 ## Introduction
 
 This is a simple themed music player based on the [Spotify Web API](https://developer.spotify.com/documentation/web-api/). Authenticated users can see all their Spotify playlists and use the player to play/pause songs, to skip to the previous/next song, and to adjust the music's volume. The implementation is loosely based on Sonny Sangha's Spotify Clone [tutorial](https://www.youtube.com/watch?v=3xrko3GpYoU&t=13678s), and the design was inspired by an amalgamation of three different Spicetify [themes](https://github.com/spicetify/spicetify-themes) and Hayden Bleasel's Spotify [demo](https://spotify-preview-demo-48v3ox9kk-beskar-labs.vercel.app/).
@@ -60,9 +59,9 @@ This is a simple themed music player based on the [Spotify Web API](https://deve
 🔒 **Authentication** - Login using your own Spotify account  
 🎸 **No Authentication** - Alternatively, you have access to a stripped-down version of the app without authentication  
 🎶 **Playlists** – View all of your Spotify playlists and songs  
-🎧 **Preview Song** - Play a 30-second preview of a song when hovering your mouse over the song   
+🎧 **Preview Song** - Play a 30-second preview of a song when hovering your mouse over the song  
 ⏯️ **Custom Player** – See currently playing song, play/pause song, skip to next/previous song, and adjust volume  
-📱 **Responsiveness** – The app is responsive to all screen sizes  
+📱 **Responsiveness** – The app is responsive to all screen sizes
 
 ### Built With
 
@@ -77,9 +76,8 @@ This project was setup with <a href="https://create.t3.gg/">Create T3 App</a> an
 
 <div align="right"><a href="#readme-top">back to top ↑</a></div>
 
-
-
 <br /> <!-- GETTING STARTED -->
+
 ## Getting Started
 
 There are two ways to access this project, **Preview** and **Full**.
@@ -96,10 +94,10 @@ To access this method, simply go to the [website](https://spotify-music-player-a
 
 #### 1. Register an application with Spotify
 
-* Go to the [Dashboard](https://developer.spotify.com/dashboard/) page at the Spotify Developer website and login using your Spotify account.
-* Once logged in, create a new app by clicking on "Create an App". Fill in the prompt however you like and click "Create".
-* Click on "Edit Settings", and add `http://localhost:3000/api/auth/callback/spotify` to the "Redirect URIs" section. Click "Save" to save your changes.
-* Take note of the Client ID and the Client Secret.
+- Go to the [Dashboard](https://developer.spotify.com/dashboard/) page at the Spotify Developer website and login using your Spotify account.
+- Once logged in, create a new app by clicking on "Create an App". Fill in the prompt however you like and click "Create".
+- Click on "Edit Settings", and add `http://localhost:3000/api/auth/callback/spotify` to the "Redirect URIs" section. Click "Save" to save your changes.
+- Take note of the Client ID and the Client Secret.
 
 #### 2. Clone the repository
 
@@ -107,6 +105,7 @@ To access this method, simply go to the [website](https://spotify-music-player-a
 git clone https://github.com/ntonioibarrola/spotify-music-player.git
 cd spotify-music-player
 ```
+
 #### 3. Replace the code in `.env.example` with the given code, and rename the file to `.env`
 
 ```sh
@@ -130,16 +129,15 @@ npm run dev   # Open http://localhost:3000 in your browser
 
 #### 5. Login using your Spotify account
 
-* Go to `http://localhost:3000` in your browser.
-* Click on "Login with Spotify" and login using your Spotify account.
-* You should now have access to my app!
-* Note: Please have a Spotify app (desktop or browser) running in the background. For more information, go to [Limitations](#limitations).
+- Go to `http://localhost:3000` in your browser.
+- Click on "Login with Spotify" and login using your Spotify account.
+- You should now have access to my app!
+- Note: Please have a Spotify app (desktop or browser) running in the background. For more information, go to [Limitations](#limitations).
 
 <div align="right"><a href="#readme-top">back to top ↑</a></div>
 
-
-
 <br /> <!-- LIMITATIONS -->
+
 ## Limitations
 
 ### Spotify Web API
@@ -154,9 +152,8 @@ Most modern browsers employ strict autoplay policies to provide more control for
 
 <div align="right"><a href="#readme-top">back to top ↑</a></div>
 
-
-
 <br /> <!-- CONTACT -->
+
 ## Contact
 
 [![Gmail][gmail-badge]][gmail-action]
@@ -165,28 +162,26 @@ Most modern browsers employ strict autoplay policies to provide more control for
 
 <div align="right"><a href="#readme-top">back to top ↑</a></div>
 
-
-
 <br /> <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
-* [Spotify Web API Documentation](https://developer.spotify.com/documentation/web-api/)
-* [Sonny Sangha's Spotify Clone Tutorial](https://www.youtube.com/watch?v=3xrko3GpYoU&t=13678s)
-* [Spicetify Themes](https://github.com/spicetify/spicetify-themes)
-* [Spicetify Dribbblish Theme](https://github.com/spicetify/spicetify-themes/tree/master/Dribbblish)
-* [Spicetify Ziro Theme](https://github.com/spicetify/spicetify-themes/tree/master/Ziro)
-* [Spicetify Turntable Theme](https://github.com/spicetify/spicetify-themes/tree/master/Turntable)
-* [Hayden Bleasel's Spotify Preview Demo](https://github.com/beskar-co/spotify-preview-demo)
-* [Othneil Drew's Best README Template](https://github.com/othneildrew/Best-README-Template)
-* [Hero Icons](https://heroicons.com/)
-* [Autoplay Policies for Chrome](https://developer.chrome.com/blog/autoplay/)
-* [Autoplay Policies for Chrome and Safari](https://bitmovin.com/autoplay-policies-safari-14-chrome-64/)
+- [Spotify Web API Documentation](https://developer.spotify.com/documentation/web-api/)
+- [Sonny Sangha's Spotify Clone Tutorial](https://www.youtube.com/watch?v=3xrko3GpYoU&t=13678s)
+- [Spicetify Themes](https://github.com/spicetify/spicetify-themes)
+- [Spicetify Dribbblish Theme](https://github.com/spicetify/spicetify-themes/tree/master/Dribbblish)
+- [Spicetify Ziro Theme](https://github.com/spicetify/spicetify-themes/tree/master/Ziro)
+- [Spicetify Turntable Theme](https://github.com/spicetify/spicetify-themes/tree/master/Turntable)
+- [Hayden Bleasel's Spotify Preview Demo](https://github.com/beskar-co/spotify-preview-demo)
+- [Othneil Drew's Best README Template](https://github.com/othneildrew/Best-README-Template)
+- [Hero Icons](https://heroicons.com/)
+- [Autoplay Policies for Chrome](https://developer.chrome.com/blog/autoplay/)
+- [Autoplay Policies for Chrome and Safari](https://bitmovin.com/autoplay-policies-safari-14-chrome-64/)
 
 <div align="right"><a href="#readme-top">back to top ↑</a></div>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [demo-badge]: https://img.shields.io/badge/-Demo_↪-555555.svg?style=for-the-badge&logo=spotify&logoColor=white
 [demo-url]: https://spotify-music-player-alpha.vercel.app/
 [gmail-badge]: https://img.shields.io/badge/Gmail-c0392b?style=for-the-badge&logo=gmail&logoColor=white

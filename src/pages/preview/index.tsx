@@ -44,7 +44,7 @@ const NoAuthHome: NextPage<NoAuthHomeProps> = ({ playlist, tracks }) => {
     <Fragment>
       <Head>
         <title>Spotify - Themed Music Player</title>
-        <link rel='icon' href='/spotify.svg' />
+        <link rel='icon' href='/icons/spotify.svg' />
       </Head>
       <main className='grid h-screen bg-spotify-100 [@media(min-width:950px)]:grid-cols-[1fr_minmax(950px,_1250px)_1fr]'>
         <Message />

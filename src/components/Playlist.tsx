@@ -66,7 +66,7 @@ function Playlist() {
             src={
               playlist && playlist.images[0]
                 ? (playlist.images[0]?.url as string)
-                : '/placeholder-image.jpg'
+                : '/images/placeholder-image.jpg'
             }
             width='180'
             height='180'
@@ -102,7 +102,7 @@ function Playlist() {
             <th className='flex w-[20%] flex-shrink-0 items-center justify-end font-normal'>
               <Image
                 className='h-[25px] w-[25px]'
-                src={'/clock.svg'}
+                src={'/icons/clock.svg'}
                 width='25'
                 height='25'
                 alt='Clock Icon'

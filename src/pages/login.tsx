@@ -16,7 +16,7 @@ const Login: FC<LoginProps> = ({ providers }) => {
     <Fragment>
       <Head>
         <title>Spotify - Themed Music Player</title>
-        <link rel='icon' href='/spotify.svg' />
+        <link rel='icon' href='/icons/spotify.svg' />
       </Head>
       <main className='grid h-screen grid-cols-[1fr_minmax(320px,_600px)_1fr] text-charcoal lg:grid-cols-[1fr_minmax(950px,_1100px)_1fr]'>
         <div className='col-start-2 col-end-3 flex flex-col items-center justify-center'>
@@ -53,7 +53,7 @@ const Login: FC<LoginProps> = ({ providers }) => {
             </div>
             <Image
               className='hidden lg:block'
-              src='/spotify.svg'
+              src='/icons/spotify.svg'
               width='400'
               height='400'
               alt='Spotify Logo'

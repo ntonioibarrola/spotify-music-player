@@ -165,7 +165,9 @@ const NoAuthPlayer: FC = () => {
         <div className='flex w-[60%] items-center gap-2'>
           <Image
             className='h-[50px] w-[50px] rounded-lg object-cover'
-            src={track?.album.images[0] ? track.album.images[0].url : '/placeholder-image.jpg'}
+            src={
+              track?.album.images[0] ? track.album.images[0].url : '/images/placeholder-image.jpg'
+            }
             width='50'
             height='50'
             draggable={false}
@@ -186,7 +188,7 @@ const NoAuthPlayer: FC = () => {
               className={`${
                 isMuted ? 'hidden' : ''
               } min-w-[20px] cursor-pointer opacity-60 hover:opacity-90`}
-              src={'/speaker.svg'}
+              src={'/icons/speaker.svg'}
               width='20'
               height='20'
               draggable={false}
@@ -196,7 +198,7 @@ const NoAuthPlayer: FC = () => {
               className={`${
                 isMuted ? '' : 'hidden'
               } min-w-[20px] cursor-pointer opacity-60 hover:opacity-90`}
-              src={'/mute.svg'}
+              src={'/icons/mute.svg'}
               width='20'
               height='20'
               draggable={false}
@@ -223,7 +225,9 @@ const NoAuthPlayer: FC = () => {
             className={`${
               isTrackPlaying ? 'animate-spin-slow-running' : 'animate-spin-slow-paused'
             } h-[80px] w-[80px] rounded-full border-[3px] border-solid border-offwhite object-cover drop-shadow-[0_0_8px_#b8bdc6]`}
-            src={track?.album.images[0] ? track.album.images[0].url : '/placeholder-image.jpg'}
+            src={
+              track?.album.images[0] ? track.album.images[0].url : '/images/placeholder-image.jpg'
+            }
             width='80'
             height='80'
             draggable={false}
@@ -254,7 +258,7 @@ const NoAuthPlayer: FC = () => {
             <div onClick={handlePreviousClick}>
               <Image
                 className='cursor-pointer opacity-40 hover:opacity-80'
-                src={'/previous.svg'}
+                src={'/icons/previous.svg'}
                 width='20'
                 height='20'
                 draggable={false}
@@ -266,7 +270,7 @@ const NoAuthPlayer: FC = () => {
                 {isTrackPlaying ? (
                   <Image
                     className='block cursor-pointer transition-[scale_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]'
-                    src={'/pause.svg'}
+                    src={'/icons/pause.svg'}
                     width='60'
                     height='60'
                     draggable={false}
@@ -276,7 +280,7 @@ const NoAuthPlayer: FC = () => {
                 ) : (
                   <Image
                     className='block cursor-pointer transition-[scale_33ms_cubic-bezier(0.3,0,0,1)] hover:scale-[1.06] active:scale-[1]'
-                    src={'/play.svg'}
+                    src={'/icons/play.svg'}
                     width='60'
                     height='60'
                     draggable={false}
@@ -289,7 +293,7 @@ const NoAuthPlayer: FC = () => {
               <div className='flex-shrink-0'>
                 <Image
                   className='cursor-not-allowed opacity-50'
-                  src={'/play.svg'}
+                  src={'/icons/play.svg'}
                   width='60'
                   height='60'
                   draggable={false}
@@ -300,7 +304,7 @@ const NoAuthPlayer: FC = () => {
             <div onClick={handleNextClick}>
               <Image
                 className='cursor-pointer opacity-40 hover:opacity-80'
-                src={'/next.svg'}
+                src={'/icons/next.svg'}
                 width='20'
                 height='20'
                 draggable={false}
@@ -314,7 +318,7 @@ const NoAuthPlayer: FC = () => {
             <div onClick={handleSpeakerClick}>
               <Image
                 className={`${isMuted ? 'hidden' : ''} cursor-pointer opacity-60 hover:opacity-90`}
-                src={'/speaker.svg'}
+                src={'/icons/speaker.svg'}
                 width='20'
                 height='20'
                 draggable={false}
@@ -322,7 +326,7 @@ const NoAuthPlayer: FC = () => {
               />
               <Image
                 className={`${isMuted ? '' : 'hidden'} cursor-pointer opacity-60 hover:opacity-90`}
-                src={'/mute.svg'}
+                src={'/icons/mute.svg'}
                 width='20'
                 height='20'
                 draggable={false}
