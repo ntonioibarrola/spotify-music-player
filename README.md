@@ -98,7 +98,7 @@ To access this method, simply go to the [website](https://spotify-music-player-a
 
 * Go to the [Dashboard](https://developer.spotify.com/dashboard/) page at the Spotify Developer website and login using your Spotify account.
 * Once logged in, create a new app by clicking on "Create an App". Fill in the prompt however you like and click "Create".
-* Click on "Edit Settings", and add the url, [http://localhost:3000/api/auth/callback/spotify](http://localhost:3000/api/auth/callback/spotify/), to the "Redirect URIs" section. Click "Save" to save your changes.
+* Click on "Edit Settings", and add `http://localhost:3000/api/auth/callback/spotify` to the "Redirect URIs" section. Click "Save" to save your changes.
 * Take note of the Client ID and the Client Secret.
 
 #### 2. Clone the repository
@@ -107,7 +107,7 @@ To access this method, simply go to the [website](https://spotify-music-player-a
 git clone https://github.com/ntonioibarrola/spotify-music-player.git
 cd spotify-music-player
 ```
-#### 3. Replace the code in .env.example with the given code, and rename the file to .env
+#### 3. Replace the code in `.env.example` with the given code, and rename the file to `.env`
 
 ```sh
 NEXTAUTH_URL=http://localhost:3000
@@ -130,7 +130,7 @@ npm run dev   # Open http://localhost:3000 in your browser
 
 #### 5. Login using your Spotify account
 
-* Go to the url, http://localhost:3000, in your browser.
+* Go to `http://localhost:3000` in your browser.
 * Click on "Login with Spotify" and login using your Spotify account.
 * You should now have access to my app!
 * Note: Please have a Spotify app (desktop or browser) running in the background. For more information, go to [Limitations](#limitations).
