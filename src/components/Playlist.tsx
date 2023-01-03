@@ -84,8 +84,8 @@ function Playlist() {
             <span className='cursor-pointer whitespace-nowrap font-semibold hover:underline [@media(max-width:949px)]:hidden'>
               {playlist?.owner.display_name}
             </span>
+            <span className='font-poppins [@media(max-width:949px)]:hidden'>•</span>
             <span className='space-x-2 text-gray-500'>
-              <span className='font-poppins [@media(max-width:949px)]:hidden'>•</span>
               <span>{playlist && playlist.followers && playlist?.followers.total} likes</span>
               <span className='font-poppins'>•</span>
               <span>{playlist?.tracks.total} songs,</span>

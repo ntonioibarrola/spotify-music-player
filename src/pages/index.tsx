@@ -58,7 +58,7 @@ const Home: NextPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>Bounce - Themed Spotify</title>
+        <title>Spotify - Themed Music Player</title>
         <link rel='icon' href='/spotify.svg' />
       </Head>
       <main className='grid h-screen bg-spotify-100 [@media(min-width:950px)]:grid-cols-[1fr_minmax(950px,_1250px)_1fr]'>
